@@ -43,6 +43,7 @@ export function LoginForm() {
           placeholder="Enter your email"
           disabled={isSubmitting}
           autoComplete="email"
+          className="py-6"
           {...register("email")}
         />
         {errors.email && (
@@ -59,7 +60,7 @@ export function LoginForm() {
             placeholder="Enter your password"
             disabled={isSubmitting}
             autoComplete="current-password"
-            className="pr-10"
+            className="py-6"
             {...register("password")}
           />
           <button
