@@ -55,7 +55,7 @@ function UserProfile() {
         <span className="text-sm font-medium text-gray-900">Superfund</span>
         <span className="text-xs">Investor</span>
       </div>
-      <button className="p-2 hover:bg-white/50 rounded-lg transition-colors">
+      <button className="p-2 hover:bg-white/50 rounded-lg transition-colors cursor-pointer">
         <LogOut className="h-5 w-5 text-black" />
       </button>
     </div>
