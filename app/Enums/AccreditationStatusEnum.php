@@ -6,9 +6,9 @@ use Filament\Support\Contracts\HasLabel;
 
 enum AccreditationStatusEnum: string implements HasLabel
 {
-    case PENDING = 'pending';
+    case PENDING  = 'pending';
     case VERIFIED = 'verified';
-    case EXPIRED = 'expired';
+    case EXPIRED  = 'expired';
 
     public function getLabel(): string
     {
