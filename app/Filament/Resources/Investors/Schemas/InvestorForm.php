@@ -1,0 +1,104 @@
+<?php
+
+namespace App\Filament\Resources\Investors\Schemas;
+
+use App\Enums\AccreditationStatusEnum;
+use App\Enums\AmlStatusEnum;
+use App\Enums\InvestorTypeEnum;
+use App\Enums\KycStatusEnum;
+use App\Models\User;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Schema;
+
+class InvestorForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Section::make('User Account')
+                    ->description('Link to user account')
+                    ->schema([
+                        Select::make('user_id')
+                            ->label('User')
+                            ->relationship('user', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->createOptionForm([
+                                TextInput::make('name')->required(),
+                                TextInput::make('email')->email()->required(),
+                                TextInput::make('password')->password()->required(),
+                            ]),
+                    ]),
+
+                Section::make('Investor Information')
+                    ->columns(2)
+                    ->schema([
+                        Select::make('investor_type')
+                            ->options(InvestorTypeEnum::class)
+                            ->required()
+                            ->default(InvestorTypeEnum::TIER_1),
+                        TextInput::make('company_name')
+                            ->maxLength(255),
+                        Textarea::make('address')
+                            ->rows(3)
+                            ->columnSpanFull(),
+                    ]),
+
+                Section::make('KYC Verification')
+                    ->columns(2)
+                    ->schema([
+                        Select::make('kyc_status')
+                            ->options(KycStatusEnum::class)
+                            ->required()
+                            ->default(KycStatusEnum::PENDING)
+                            ->live(),
+                        Select::make('kyc_approved_by')
+                            ->label('Approved By')
+                            ->options(User::where('type', 'admin')->pluck('name', 'id'))
+                            ->searchable()
+                            ->visible(fn ($get) => $get('kyc_status') === KycStatusEnum::APPROVED->value),
+                        DateTimePicker::make('kyc_submitted_at')
+                            ->label('Submitted At'),
+                        DateTimePicker::make('kyc_approved_at')
+                            ->label('Approved At')
+                            ->visible(fn ($get) => $get('kyc_status') === KycStatusEnum::APPROVED->value),
+                        Textarea::make('kyc_rejection_reason')
+                            ->label('Rejection Reason')
+                            ->rows(2)
+                            ->columnSpanFull()
+                            ->visible(fn ($get) => $get('kyc_status') === KycStatusEnum::REJECTED->value),
+                    ]),
+
+                Section::make('AML & Accreditation')
+                    ->columns(2)
+                    ->schema([
+                        Select::make('aml_status')
+                            ->label('AML Status')
+                            ->options(AmlStatusEnum::class)
+                            ->default(AmlStatusEnum::PENDING),
+                        DateTimePicker::make('aml_checked_at')
+                            ->label('AML Checked At'),
+                        Select::make('accreditation_status')
+                            ->options(AccreditationStatusEnum::class)
+                            ->default(AccreditationStatusEnum::PENDING),
+                        DatePicker::make('accreditation_expires_at')
+                            ->label('Accreditation Expires'),
+                    ]),
+
+                Section::make('Status')
+                    ->schema([
+                        Toggle::make('is_active')
+                            ->label('Active')
+                            ->helperText('Allow this investor to make investments'),
+                    ]),
+            ]);
+    }
+}

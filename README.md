@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Libelit Backend
 
-## Getting Started
+### Pre-requisites
 
-First, run the development server:
+- PHP 8.3 (https://www.php.net/downloads)
+- Composer (https://getcomposer.org/download/)
 
+#### Redis Container (for caching)
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker run -v /local-data/:/data -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Mariadb Container
+```bash
+docker run --name mariadb -e MYSQL_ROOT_PASSWORD=Test1234 -p 3306:3306  -d docker.io/library/mariadb:10.5
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Setup
+```bash
+git clone https://github.com/libelit/libelit-backend
+```
+### Environment
+```bash
+cp .env.example .env
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installation
+```bash
+cd libelit-backend
+composer install
+php artisan key:generate
+```
 
-## Learn More
+### Run migrations
+```bash
+cd libelit-backend
+php artisan migrate
+php artisan db:seed
+php artisan passport:client --personal
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Run Server
+```bash
+cd libelit-backend
+php artisan serve
+```
