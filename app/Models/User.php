@@ -64,9 +64,9 @@ class User extends Authenticatable implements OAuthenticatable
         return $this->hasOne(DeveloperProfile::class);
     }
 
-    public function investorProfile(): HasOne
+    public function lenderProfile(): HasOne
     {
-        return $this->hasOne(InvestorProfile::class);
+        return $this->hasOne(LenderProfile::class);
     }
 
     public function isAdmin(): bool
@@ -79,8 +79,8 @@ class User extends Authenticatable implements OAuthenticatable
         return $this->type === UserTypeEnum::DEVELOPER;
     }
 
-    public function isInvestor(): bool
+    public function isLender(): bool
     {
-        return $this->type === UserTypeEnum::INVESTOR;
+        return $this->type === UserTypeEnum::LENDER;
     }
 }

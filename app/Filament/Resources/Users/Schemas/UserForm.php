@@ -59,7 +59,7 @@ class UserForm
                         TextInput::make('company_name')
                             ->label('Company Name')
                             ->maxLength(255)
-                            ->visible(fn (Get $get): bool => in_array($get('type'), [UserTypeEnum::DEVELOPER, UserTypeEnum::INVESTOR])),
+                            ->visible(fn (Get $get): bool => in_array($get('type'), [UserTypeEnum::DEVELOPER, UserTypeEnum::LENDER])),
                     ]),
                 Section::make('Avatar')
                     ->schema([

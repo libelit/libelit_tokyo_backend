@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 
-enum InvestorTypeEnum: string implements HasLabel
+enum LenderTypeEnum: string implements HasLabel
 {
     case TIER_1 = 'tier_1';
     case TIER_2 = 'tier_2';

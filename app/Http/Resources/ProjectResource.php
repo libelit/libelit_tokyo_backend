@@ -17,7 +17,7 @@ class ProjectResource extends JsonResource
     {
         // Calculate amount raised from confirmed investments
         $amountRaised = 0;
-        $investorsCount = 0;
+        $lendersCount = 0;
 
         try {
             $confirmedInvestments = $this->investments()
@@ -25,7 +25,7 @@ class ProjectResource extends JsonResource
                 ->orWhere('status', InvestmentStatusEnum::COMPLETED);
 
             $amountRaised = (float) $confirmedInvestments->sum('amount');
-            $investorsCount = $confirmedInvestments->distinct('investor_id')->count('investor_id');
+            $lendersCount = $confirmedInvestments->distinct('lender_id')->count('lender_id');
         } catch (\Exception $e) {
             // If investments relationship fails, default to 0
         }
@@ -67,7 +67,7 @@ class ProjectResource extends JsonResource
             'documents' => DocumentResource::collection($this->whenLoaded('documents')),
             'documents_count' => $this->whenCounted('documents'),
             'milestones_count' => $this->whenCounted('milestones'),
-            'investors_count' => $investorsCount,
+            'lenders_count' => $lendersCount,
         ];
     }
 }

@@ -40,7 +40,7 @@ class UsersTable
                     ->color(fn (UserTypeEnum $state): string => match ($state) {
                         UserTypeEnum::ADMIN => 'danger',
                         UserTypeEnum::DEVELOPER => 'info',
-                        UserTypeEnum::INVESTOR => 'success',
+                        UserTypeEnum::LENDER => 'success',
                     }),
                 TextColumn::make('status')
                     ->badge()

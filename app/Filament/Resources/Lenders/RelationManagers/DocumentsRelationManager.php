@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Investors\RelationManagers;
+namespace App\Filament\Resources\Lenders\RelationManagers;
 
 use App\Enums\DocumentTypeEnum;
 use App\Enums\VerificationStatusEnum;

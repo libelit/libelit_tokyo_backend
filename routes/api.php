@@ -23,7 +23,7 @@ Route::middleware(['api'])
                 return $request->user();
             });
 
-            // Projects (public - for investors)
+            // Projects (public - for lenders)
             Route::get('/projects', [ProjectController::class, 'index']);
 
             // Developer Routes

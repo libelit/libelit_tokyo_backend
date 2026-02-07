@@ -8,10 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('investor_profiles', function (Blueprint $table) {
+        Schema::create('lender_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('investor_type')->nullable();
+            $table->string('lender_type')->nullable();
             $table->string('company_name')->nullable();
             $table->text('address')->nullable();
             $table->string('kyc_status')->default('pending')->nullable();
@@ -35,6 +35,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('investor_profiles');
+        Schema::dropIfExists('lender_profiles');
     }
 };

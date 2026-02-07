@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->foreignId('project_id')->constrained();
-            $table->foreignId('investor_id')->constrained('investor_profiles');
+            $table->foreignId('lender_id')->constrained('lender_profiles');
             $table->foreignId('token_id')->nullable()->constrained();
             $table->decimal('amount', 18, 2);
             $table->decimal('token_quantity', 18, 8);
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index('project_id');
-            $table->index('investor_id');
+            $table->index('lender_id');
             $table->index('status');
         });
     }

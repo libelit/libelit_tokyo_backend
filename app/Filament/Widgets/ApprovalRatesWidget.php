@@ -5,7 +5,7 @@ namespace App\Filament\Widgets;
 use App\Enums\KybStatusEnum;
 use App\Enums\KycStatusEnum;
 use App\Enums\ProjectStatusEnum;
-use App\Models\InvestorProfile;
+use App\Models\LenderProfile;
 use App\Models\Project;
 use App\Models\DeveloperProfile;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -25,8 +25,8 @@ class ApprovalRatesWidget extends BaseWidget
         $kybRate = $totalKyb > 0 ? round(($approvedKyb / $totalKyb) * 100, 1) : 0;
 
         // KYC Stats
-        $totalKyc = InvestorProfile::count();
-        $approvedKyc = InvestorProfile::where('kyc_status', KycStatusEnum::APPROVED)->count();
+        $totalKyc = LenderProfile::count();
+        $approvedKyc = LenderProfile::where('kyc_status', KycStatusEnum::APPROVED)->count();
         $kycRate = $totalKyc > 0 ? round(($approvedKyc / $totalKyc) * 100, 1) : 0;
 
         // Project Stats

@@ -4,7 +4,7 @@ namespace App\Jobs\Auth;
 
 use App\Enums\UserTypeEnum;
 use App\Models\DeveloperProfile;
-use App\Models\InvestorProfile;
+use App\Models\LenderProfile;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -74,7 +74,7 @@ class RegisterJob
     protected function createUserProfile(User $user): void
     {
         match ($user->type) {
-            UserTypeEnum::INVESTOR => InvestorProfile::query()->create(['user_id' => $user->id, 'company_name' => $this->companyName]),
+            UserTypeEnum::LENDER => LenderProfile::query()->create(['user_id' => $user->id, 'company_name' => $this->companyName]),
             UserTypeEnum::DEVELOPER => DeveloperProfile::query()->create(['user_id' => $user->id, 'company_name' => $this->companyName]),
             default => null,
         };

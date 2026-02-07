@@ -5,7 +5,7 @@ namespace App\Filament\Widgets;
 use App\Enums\KybStatusEnum;
 use App\Enums\KycStatusEnum;
 use App\Enums\ProjectStatusEnum;
-use App\Models\InvestorProfile;
+use App\Models\LenderProfile;
 use App\Models\Project;
 use App\Models\DeveloperProfile;
 use App\Models\User;
@@ -29,8 +29,8 @@ class StatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-building-office')
                 ->color('info'),
 
-            Stat::make('Investors', InvestorProfile::count())
-                ->description(InvestorProfile::where('kyc_status', KycStatusEnum::PENDING)->count() . ' pending KYC')
+            Stat::make('Lenders', LenderProfile::count())
+                ->description(LenderProfile::where('kyc_status', KycStatusEnum::PENDING)->count() . ' pending KYC')
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('success'),
 

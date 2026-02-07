@@ -4,7 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Enums\KybStatusEnum;
 use App\Enums\KycStatusEnum;
-use App\Models\InvestorProfile;
+use App\Models\LenderProfile;
 use App\Models\DeveloperProfile;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;

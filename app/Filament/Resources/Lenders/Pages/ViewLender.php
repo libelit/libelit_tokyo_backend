@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\Investors\Pages;
+namespace App\Filament\Resources\Lenders\Pages;
 
 use App\Enums\AmlStatusEnum;
 use App\Enums\KycStatusEnum;
-use App\Filament\Resources\Investors\InvestorResource;
+use App\Filament\Resources\Lenders\LenderResource;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 
-class ViewInvestor extends ViewRecord
+class ViewLender extends ViewRecord
 {
-    protected static string $resource = InvestorResource::class;
+    protected static string $resource = LenderResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -24,7 +24,7 @@ class ViewInvestor extends ViewRecord
                 ->icon('heroicon-o-check-circle')
                 ->requiresConfirmation()
                 ->modalHeading('Approve KYC Verification')
-                ->modalDescription('Are you sure you want to approve this investor\'s KYC verification?')
+                ->modalDescription('Are you sure you want to approve this lender\'s KYC verification?')
                 ->visible(fn () => $this->record->kyc_status !== KycStatusEnum::APPROVED)
                 ->action(function () {
                     $this->record->update([
@@ -89,7 +89,7 @@ class ViewInvestor extends ViewRecord
                 ->color('danger')
                 ->icon('heroicon-o-flag')
                 ->requiresConfirmation()
-                ->modalDescription('This will flag this investor for AML concerns and deactivate their account.')
+                ->modalDescription('This will flag this lender for AML concerns and deactivate their account.')
                 ->visible(fn () => $this->record->aml_status !== AmlStatusEnum::FLAGGED)
                 ->action(function () {
                     $this->record->update([

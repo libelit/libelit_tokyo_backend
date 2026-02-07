@@ -30,10 +30,10 @@ class InvestmentsRelationManager extends RelationManager
     {
         return $schema
             ->schema([
-                Select::make('investor_id')
-                    ->label('Investor')
-                    ->relationship('investor', 'id')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->user->name ?? $record->company_name ?? 'Investor #' . $record->id)
+                Select::make('lender_id')
+                    ->label('Lender')
+                    ->relationship('lender', 'id')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->user->name ?? $record->company_name ?? 'Lender #' . $record->id)
                     ->searchable()
                     ->preload()
                     ->required(),
@@ -69,8 +69,8 @@ class InvestmentsRelationManager extends RelationManager
                     ->label('ID')
                     ->limit(8)
                     ->tooltip(fn ($record) => $record->uuid),
-                TextColumn::make('investor.user.name')
-                    ->label('Investor')
+                TextColumn::make('lender.user.name')
+                    ->label('Lender')
                     ->searchable(),
                 TextColumn::make('amount')
                     ->money('USD')

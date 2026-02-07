@@ -25,10 +25,10 @@ class InvestmentForm
                             ->searchable()
                             ->preload()
                             ->required(),
-                        Select::make('investor_id')
-                            ->label('Investor')
-                            ->relationship('investor', 'id')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->user->name ?? $record->company_name ?? 'Investor #' . $record->id)
+                        Select::make('lender_id')
+                            ->label('Lender')
+                            ->relationship('lender', 'id')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->user->name ?? $record->company_name ?? 'Lender #' . $record->id)
                             ->searchable()
                             ->preload()
                             ->required(),

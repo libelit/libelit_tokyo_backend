@@ -4,24 +4,24 @@ namespace App\Filament\Widgets;
 
 use App\Enums\AmlStatusEnum;
 use App\Enums\KycStatusEnum;
-use App\Models\InvestorProfile;
+use App\Models\LenderProfile;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 
-class PendingInvestorApprovalsWidget extends BaseWidget
+class PendingLenderApprovalsWidget extends BaseWidget
 {
     protected static ?int $sort = 3;
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Pending Investor Approvals';
+    protected static ?string $heading = 'Pending Lender Approvals';
 
     public function table(Table $table): Table
     {
         return $table
             ->query(
-                InvestorProfile::query()
+                LenderProfile::query()
                     ->where(function ($query) {
                         $query->where('kyc_status', KycStatusEnum::PENDING)
                             ->orWhere('kyc_status', KycStatusEnum::UNDER_REVIEW)
@@ -32,7 +32,7 @@ class PendingInvestorApprovalsWidget extends BaseWidget
                 TextColumn::make('user.name')
                     ->label('Name')
                     ->searchable(),
-                TextColumn::make('investor_type')
+                TextColumn::make('lender_type')
                     ->badge(),
                 TextColumn::make('kyc_status')
                     ->label('KYC')
@@ -55,7 +55,7 @@ class PendingInvestorApprovalsWidget extends BaseWidget
                     ->dateTime()
                     ->sortable(),
             ])
-            ->recordUrl(fn ($record) => route('filament.admin.resources.investors.view', $record))
+            ->recordUrl(fn ($record) => route('filament.admin.resources.lenders.view', $record))
             ->defaultSort('kyc_submitted_at', 'asc')
             ->paginated([5, 10, 25]);
     }

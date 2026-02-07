@@ -4,29 +4,29 @@ namespace Database\Seeders;
 
 use App\Enums\AccreditationStatusEnum;
 use App\Enums\AmlStatusEnum;
-use App\Enums\InvestorTypeEnum;
+use App\Enums\LenderTypeEnum;
 use App\Enums\KycStatusEnum;
 use App\Enums\UserStatusEnum;
 use App\Enums\UserTypeEnum;
-use App\Models\InvestorProfile;
+use App\Models\LenderProfile;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class InvestorSeeder extends Seeder
+class LenderSeeder extends Seeder
 {
     public function run(): void
     {
-        $investors = [
+        $lenders = [
             [
                 'user' => [
                     'name' => 'Alex Crombell',
-                    'email' => 'investor1@test.com',
+                    'email' => 'lender1@test.com',
                     'phone' => '+971509876543',
                     'status' => UserStatusEnum::ACTIVE,
                 ],
                 'profile' => [
-                    'investor_type' => InvestorTypeEnum::TIER_1,
+                    'lender_type' => LenderTypeEnum::TIER_1,
                     'address' => 'Palm Jumeirah, Villa 42, Dubai, UAE',
                     'kyc_status' => KycStatusEnum::APPROVED,
                     'kyc_submitted_at' => now()->subDays(45),
@@ -41,12 +41,12 @@ class InvestorSeeder extends Seeder
             [
                 'user' => [
                     'name' => 'Swiss Capital Partners AG',
-                    'email' => 'investor2@test.com',
+                    'email' => 'lender2@test.com',
                     'phone' => '+41441234567',
                     'status' => UserStatusEnum::ACTIVE,
                 ],
                 'profile' => [
-                    'investor_type' => InvestorTypeEnum::TIER_1,
+                    'lender_type' => LenderTypeEnum::TIER_1,
                     'company_name' => 'Swiss Capital Partners AG',
                     'address' => 'Bahnhofstrasse 45, 8001 Zurich, Switzerland',
                     'kyc_status' => KycStatusEnum::APPROVED,
@@ -62,12 +62,12 @@ class InvestorSeeder extends Seeder
             [
                 'user' => [
                     'name' => 'Pacific Ventures Fund',
-                    'email' => 'investor3@test.com',
+                    'email' => 'lender3@test.com',
                     'phone' => '+6598765432',
                     'status' => UserStatusEnum::ACTIVE,
                 ],
                 'profile' => [
-                    'investor_type' => InvestorTypeEnum::TIER_2,
+                    'lender_type' => LenderTypeEnum::TIER_2,
                     'company_name' => 'Pacific Ventures Fund LP',
                     'address' => 'Marina Bay Financial Centre, Tower 3, #35-01, Singapore 018982',
                     'kyc_status' => KycStatusEnum::UNDER_REVIEW,
@@ -80,12 +80,12 @@ class InvestorSeeder extends Seeder
             [
                 'user' => [
                     'name' => 'John Smith',
-                    'email' => 'investor4@test.com',
+                    'email' => 'lender4@test.com',
                     'phone' => '+12025551234',
                     'status' => UserStatusEnum::PENDING,
                 ],
                 'profile' => [
-                    'investor_type' => InvestorTypeEnum::TIER_3,
+                    'lender_type' => LenderTypeEnum::TIER_3,
                     'address' => '1600 Pennsylvania Ave, Washington, DC 20500',
                     'kyc_status' => KycStatusEnum::PENDING,
                     'aml_status' => AmlStatusEnum::PENDING,
@@ -96,12 +96,12 @@ class InvestorSeeder extends Seeder
             [
                 'user' => [
                     'name' => 'James Wilson',
-                    'email' => 'investor5@test.com',
+                    'email' => 'lender5@test.com',
                     'phone' => '+442079876543',
                     'status' => UserStatusEnum::ACTIVE,
                 ],
                 'profile' => [
-                    'investor_type' => InvestorTypeEnum::TIER_2,
+                    'lender_type' => LenderTypeEnum::TIER_2,
                     'address' => '221B Baker Street, London NW1 6XE',
                     'kyc_status' => KycStatusEnum::REJECTED,
                     'kyc_submitted_at' => now()->subDays(20),
@@ -113,17 +113,17 @@ class InvestorSeeder extends Seeder
             ],
         ];
 
-        foreach ($investors as $data) {
+        foreach ($lenders as $data) {
             $user = User::updateOrCreate(
                 ['email' => $data['user']['email']],
                 array_merge($data['user'], [
                     'password' => Hash::make('password'),
-                    'type' => UserTypeEnum::INVESTOR,
+                    'type' => UserTypeEnum::LENDER,
                     'email_verified_at' => now(),
                 ])
             );
 
-            InvestorProfile::updateOrCreate(
+            LenderProfile::updateOrCreate(
                 ['user_id' => $user->id],
                 $data['profile']
             );

@@ -16,7 +16,7 @@ class Investment extends Model
     protected $fillable = [
         'uuid',
         'project_id',
-        'investor_id',
+        'lender_id',
         'token_id',
         'amount',
         'token_quantity',
@@ -52,9 +52,9 @@ class Investment extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function investor(): BelongsTo
+    public function lender(): BelongsTo
     {
-        return $this->belongsTo(InvestorProfile::class, 'investor_id');
+        return $this->belongsTo(LenderProfile::class, 'lender_id');
     }
 
     public function token(): BelongsTo

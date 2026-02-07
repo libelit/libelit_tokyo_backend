@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Enums\AccreditationStatusEnum;
 use App\Enums\AmlStatusEnum;
-use App\Enums\InvestorTypeEnum;
+use App\Enums\LenderTypeEnum;
 use App\Enums\KycStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,13 +13,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class InvestorProfile extends Model
+class LenderProfile extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'lender_profiles';
+
     protected $fillable = [
         'user_id',
-        'investor_type',
+        'lender_type',
         'company_name',
         'address',
         'kyc_status',
@@ -35,7 +37,7 @@ class InvestorProfile extends Model
     ];
 
     protected $casts = [
-        'investor_type' => InvestorTypeEnum::class,
+        'lender_type' => LenderTypeEnum::class,
         'kyc_status' => KycStatusEnum::class,
         'kyc_submitted_at' => 'datetime',
         'kyc_approved_at' => 'datetime',
@@ -58,7 +60,7 @@ class InvestorProfile extends Model
 
     public function investments(): HasMany
     {
-        return $this->hasMany(Investment::class, 'investor_id');
+        return $this->hasMany(Investment::class, 'lender_id');
     }
 
     public function documents(): MorphMany

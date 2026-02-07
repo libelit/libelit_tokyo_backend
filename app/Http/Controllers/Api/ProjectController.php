@@ -14,7 +14,7 @@ class ProjectController extends Controller
 {
     /**
      * List projects based on user type.
-     * - Investors: see approved/funded projects + projects they've invested in
+     * - Lenders: see approved/funded projects + projects they've invested in
      * - Developers: see only their own projects
      * - Admins: see all projects
      */
@@ -31,11 +31,11 @@ class ProjectController extends Controller
                 // No filter - admin sees all projects
             } elseif ($user->type === UserTypeEnum::DEVELOPER) {
                 $this->filterForDeveloper($query, $user);
-            } elseif ($user->type === UserTypeEnum::INVESTOR) {
-                $this->filterForInvestor($query, $user);
+            } elseif ($user->type === UserTypeEnum::LENDER) {
+                $this->filterForLender($query, $user);
             } else {
                 // Unknown user type - show only approved/funded projects
-                $this->filterForInvestor($query, $user);
+                $this->filterForLender($query, $user);
             }
 
             $projects = $query->latest()->paginate(15);
@@ -74,15 +74,15 @@ class ProjectController extends Controller
     }
 
     /**
-     * Filter projects for investor - approved/funded projects + invested projects.
+     * Filter projects for lender - approved/funded projects + invested projects.
      */
-    protected function filterForInvestor($query, $user): void
+    protected function filterForLender($query, $user): void
     {
-        $investorProfile = $user->investorProfile;
+        $lenderProfile = $user->lenderProfile;
         $investedProjectIds = [];
 
-        if ($investorProfile) {
-            $investedProjectIds = $investorProfile->investments()->pluck('project_id')->toArray();
+        if ($lenderProfile) {
+            $investedProjectIds = $lenderProfile->investments()->pluck('project_id')->toArray();
         }
 
         // Show approved projects (available for investment) and funded projects

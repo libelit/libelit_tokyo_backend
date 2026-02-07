@@ -3,7 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Widgets\PendingApprovalsWidget;
-use App\Filament\Widgets\PendingInvestorApprovalsWidget;
+use App\Filament\Widgets\PendingLenderApprovalsWidget;
 use App\Filament\Widgets\StatsOverview;
 use App\Helpers\Login;
 use Filament\Http\Middleware\Authenticate;
@@ -51,7 +51,7 @@ class AdminPanelProvider extends PanelProvider
                 AccountWidget::class,
                 StatsOverview::class,
                 PendingApprovalsWidget::class,
-                PendingInvestorApprovalsWidget::class,
+                PendingLenderApprovalsWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

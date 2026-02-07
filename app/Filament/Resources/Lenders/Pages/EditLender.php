@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\Investors\Pages;
+namespace App\Filament\Resources\Lenders\Pages;
 
-use App\Filament\Resources\Investors\InvestorResource;
+use App\Filament\Resources\Lenders\LenderResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditInvestor extends EditRecord
+class EditLender extends EditRecord
 {
-    protected static string $resource = InvestorResource::class;
+    protected static string $resource = LenderResource::class;
 
     protected function getHeaderActions(): array
     {

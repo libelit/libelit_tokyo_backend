@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\Investors\Tables;
+namespace App\Filament\Resources\Lenders\Tables;
 
 use App\Enums\AmlStatusEnum;
-use App\Enums\InvestorTypeEnum;
+use App\Enums\LenderTypeEnum;
 use App\Enums\KycStatusEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -18,7 +18,7 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
-class InvestorsTable
+class LendersTable
 {
     public static function configure(Table $table): Table
     {
@@ -32,12 +32,12 @@ class InvestorsTable
                     ->label('Email')
                     ->searchable()
                     ->toggleable(),
-                TextColumn::make('investor_type')
+                TextColumn::make('lender_type')
                     ->badge()
-                    ->color(fn (InvestorTypeEnum $state): string => match ($state) {
-                        InvestorTypeEnum::TIER_1 => 'success',
-                        InvestorTypeEnum::TIER_2 => 'info',
-                        InvestorTypeEnum::TIER_3 => 'gray',
+                    ->color(fn (LenderTypeEnum $state): string => match ($state) {
+                        LenderTypeEnum::TIER_1 => 'success',
+                        LenderTypeEnum::TIER_2 => 'info',
+                        LenderTypeEnum::TIER_3 => 'gray',
                     }),
                 TextColumn::make('company_name')
                     ->searchable()
@@ -73,8 +73,8 @@ class InvestorsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('investor_type')
-                    ->options(InvestorTypeEnum::class),
+                SelectFilter::make('lender_type')
+                    ->options(LenderTypeEnum::class),
                 SelectFilter::make('kyc_status')
                     ->options(KycStatusEnum::class),
                 SelectFilter::make('aml_status')

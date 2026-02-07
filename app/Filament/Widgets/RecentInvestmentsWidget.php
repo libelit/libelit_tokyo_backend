@@ -21,13 +21,13 @@ class RecentInvestmentsWidget extends BaseWidget
         return $table
             ->query(
                 Investment::query()
-                    ->with(['investor.user', 'project'])
+                    ->with(['lender.user', 'project'])
                     ->latest()
                     ->limit(5)
             )
             ->columns([
-                TextColumn::make('investor.user.name')
-                    ->label('Investor')
+                TextColumn::make('lender.user.name')
+                    ->label('Lender')
                     ->limit(20),
                 TextColumn::make('project.title')
                     ->label('Project')

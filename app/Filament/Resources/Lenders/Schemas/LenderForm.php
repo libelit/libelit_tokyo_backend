@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Resources\Investors\Schemas;
+namespace App\Filament\Resources\Lenders\Schemas;
 
 use App\Enums\AccreditationStatusEnum;
 use App\Enums\AmlStatusEnum;
-use App\Enums\InvestorTypeEnum;
+use App\Enums\LenderTypeEnum;
 use App\Enums\KycStatusEnum;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
@@ -16,7 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
-class InvestorForm
+class LenderForm
 {
     public static function configure(Schema $schema): Schema
     {
@@ -38,13 +38,13 @@ class InvestorForm
                             ]),
                     ]),
 
-                Section::make('Investor Information')
+                Section::make('Lender Information')
                     ->columns(2)
                     ->schema([
-                        Select::make('investor_type')
-                            ->options(InvestorTypeEnum::class)
+                        Select::make('lender_type')
+                            ->options(LenderTypeEnum::class)
                             ->required()
-                            ->default(InvestorTypeEnum::TIER_1),
+                            ->default(LenderTypeEnum::TIER_1),
                         TextInput::make('company_name')
                             ->maxLength(255),
                         Textarea::make('address')
@@ -97,7 +97,7 @@ class InvestorForm
                     ->schema([
                         Toggle::make('is_active')
                             ->label('Active')
-                            ->helperText('Allow this investor to make investments'),
+                            ->helperText('Allow this lender to make investments'),
                     ]),
             ]);
     }

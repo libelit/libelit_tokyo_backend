@@ -56,7 +56,7 @@ class DocumentsRelationManager extends RelationManager
                     ->options(VerificationStatusEnum::class)
                     ->default(VerificationStatusEnum::PENDING),
                 Toggle::make('is_public')
-                    ->label('Visible to Investors')
+                    ->label('Visible to Lenders')
                     ->default(false)
             ]);
     }

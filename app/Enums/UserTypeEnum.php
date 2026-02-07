@@ -8,14 +8,14 @@ enum UserTypeEnum: string implements HasLabel
 {
     case ADMIN = 'admin';
     case DEVELOPER = 'developer';
-    case INVESTOR = 'investor';
+    case LENDER = 'lender';
 
     public function getLabel(): string
     {
         return match ($this) {
             self::ADMIN => 'Admin',
             self::DEVELOPER => 'Developer',
-            self::INVESTOR => 'Investor',
+            self::LENDER => 'Lender',
         };
     }
 }

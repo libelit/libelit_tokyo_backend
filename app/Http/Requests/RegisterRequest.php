@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
             'name'         => ['required', 'string', 'max:255'],
             'email'        => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password'     => ['required', 'string', 'min:8', 'confirmed'],
-            'type'         => ['required', 'string', 'in:investor,developer'],
+            'type'         => ['required', 'string', 'in:lender,developer'],
             'company_name' => ['required', 'string', 'max:255'],
         ];
     }

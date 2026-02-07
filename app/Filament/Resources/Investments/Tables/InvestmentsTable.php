@@ -24,8 +24,8 @@ class InvestmentsTable
                     ->searchable()
                     ->limit(8)
                     ->tooltip(fn ($record) => $record->uuid),
-                TextColumn::make('investor.user.name')
-                    ->label('Investor')
+                TextColumn::make('lender.user.name')
+                    ->label('Lender')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('project.title')
@@ -78,10 +78,10 @@ class InvestmentsTable
                     ->label('Project')
                     ->searchable()
                     ->preload(),
-                SelectFilter::make('investor_id')
-                    ->relationship('investor', 'id')
-                    ->label('Investor')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->user->name ?? 'Investor #' . $record->id)
+                SelectFilter::make('lender_id')
+                    ->relationship('lender', 'id')
+                    ->label('Lender')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->user->name ?? 'Lender #' . $record->id)
                     ->searchable()
                     ->preload(),
             ])

@@ -5,7 +5,7 @@ namespace App\Filament\Resources\Users\Pages;
 use App\Enums\UserTypeEnum;
 use App\Filament\Resources\Users\UserResource;
 use App\Models\DeveloperProfile;
-use App\Models\InvestorProfile;
+use App\Models\LenderProfile;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateUser extends CreateRecord
@@ -22,7 +22,7 @@ class CreateUser extends CreateRecord
                 'user_id' => $user->id,
                 'company_name' => $companyName,
             ]),
-            UserTypeEnum::INVESTOR => InvestorProfile::create([
+            UserTypeEnum::LENDER => LenderProfile::create([
                 'user_id' => $user->id,
                 'company_name' => $companyName,
             ]),
