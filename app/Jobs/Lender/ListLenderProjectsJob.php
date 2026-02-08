@@ -45,7 +45,7 @@ class ListLenderProjectsJob
             // - SUBMITTED: visible to all lenders (marketplace)
             // - UNDER_REVIEW/APPROVED/FUNDING/FUNDED/COMPLETED: only visible to the lender who claimed it (exclusive)
             $query = Project::query()
-                ->with(['developer.user', 'lender', 'token', 'photos'])
+                ->with(['developer.user', 'documents','lender', 'photos', 'milestones.proofs'])
                 ->withCount(['milestones', 'photos']);
 
             $query->where(function ($q) use ($lenderId) {
