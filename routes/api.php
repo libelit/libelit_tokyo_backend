@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Developer\DeveloperKybController;
 use App\Http\Controllers\Api\Developer\DeveloperProjectController;
 use App\Http\Controllers\Api\Developer\ProjectDocumentController;
 use App\Http\Controllers\Api\Developer\ProjectMilestoneController;
+use App\Http\Controllers\Api\Developer\ProjectPhotoController;
 use App\Http\Controllers\Api\Lender\LenderKybController;
 use App\Http\Controllers\Api\Lender\LenderProfileController;
 use App\Http\Controllers\Api\Lender\LenderProjectController;
@@ -50,6 +51,12 @@ Route::middleware(['api'])
                 Route::get('projects/{projectId}/documents', [ProjectDocumentController::class, 'index']);
                 Route::post('projects/{projectId}/documents', [ProjectDocumentController::class, 'store']);
                 Route::delete('projects/{projectId}/documents/{id}', [ProjectDocumentController::class, 'destroy']);
+
+                // Project Photos
+                Route::get('projects/{projectId}/photos', [ProjectPhotoController::class, 'index']);
+                Route::post('projects/{projectId}/photos', [ProjectPhotoController::class, 'store']);
+                Route::put('projects/{projectId}/photos/{photoId}', [ProjectPhotoController::class, 'update']);
+                Route::delete('projects/{projectId}/photos/{photoId}', [ProjectPhotoController::class, 'destroy']);
 
                 // Project Milestones
                 Route::get('projects/{projectId}/milestones', [ProjectMilestoneController::class, 'index']);

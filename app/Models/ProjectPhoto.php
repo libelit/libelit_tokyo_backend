@@ -1,0 +1,133 @@
+<?php
+
+namespace App\Models;
+
+use App\Enums\DocumentS3StatusEnum;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
+class ProjectPhoto extends Model
+{
+    use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'uuid',
+        'project_id',
+        'file_path',
+        'file_name',
+        'file_size',
+        'mime_type',
+        'title',
+        'is_featured',
+        'sort_order',
+        'uploaded_by',
+        'storage_disk',
+        's3_path',
+        's3_url',
+        's3_bucket',
+        's3_status',
+        'uploaded_to_s3_at',
+    ];
+
+    protected $casts = [
+        'file_size' => 'integer',
+        'is_featured' => 'boolean',
+        'sort_order' => 'integer',
+        's3_status' => DocumentS3StatusEnum::class,
+        'uploaded_to_s3_at' => 'datetime',
+    ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($photo) {
+            if (empty($photo->uuid)) {
+                $photo->uuid = Str::uuid();
+            }
+        });
+    }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function uploadedByUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'uploaded_by');
+    }
+
+    /**
+     * Get the file URL (S3 signed URL or local).
+     */
+    public function getFileUrlAttribute(): ?string
+    {
+        if ($this->storage_disk === 's3' && $this->s3_path) {
+            return $this->getS3SignedUrl();
+        }
+
+        // Fallback to local storage
+        if ($this->file_path) {
+            return Storage::disk('public')->url($this->file_path);
+        }
+
+        return null;
+    }
+
+    /**
+     * Generate a signed URL for S3 access.
+     */
+    public function getS3SignedUrl(int $expirationMinutes = 60): ?string
+    {
+        if (!$this->s3_path) {
+            return null;
+        }
+
+        try {
+            return Storage::disk('s3')->temporaryUrl(
+                $this->s3_path,
+                now()->addMinutes($expirationMinutes)
+            );
+        } catch (\Exception $e) {
+            // If signed URL fails, return the direct URL
+            return $this->s3_url;
+        }
+    }
+
+    /**
+     * Get formatted file size.
+     */
+    public function getFormattedFileSizeAttribute(): string
+    {
+        $bytes = $this->file_size ?? 0;
+
+        if ($bytes >= 1048576) {
+            return number_format($bytes / 1048576, 2) . ' MB';
+        } elseif ($bytes >= 1024) {
+            return number_format($bytes / 1024, 2) . ' KB';
+        }
+
+        return $bytes . ' bytes';
+    }
+
+    /**
+     * Scope to get featured photos.
+     */
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
+    }
+
+    /**
+     * Scope to order by sort order.
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('sort_order')->orderBy('created_at');
+    }
+}

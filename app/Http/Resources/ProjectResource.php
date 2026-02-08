@@ -68,6 +68,20 @@ class ProjectResource extends JsonResource
             'documents_count' => $this->whenCounted('documents'),
             'milestones_count' => $this->whenCounted('milestones'),
             'lenders_count' => $lendersCount,
+            'cover_photo_url' => $this->getCoverPhotoUrl(),
         ];
+    }
+
+    private function getCoverPhotoUrl(): ?string
+    {
+        // Use featuredPhoto relationship first
+        $coverPhoto = $this->featuredPhoto;
+
+        // Fallback to first photo if no featured photo
+        if (!$coverPhoto) {
+            $coverPhoto = $this->photos->first();
+        }
+
+        return $coverPhoto?->file_url;
     }
 }

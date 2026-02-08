@@ -28,6 +28,7 @@ class ListProjectsJob
             $developerProfile = $this->user->developerProfile;
 
             $query = $developerProfile->projects()
+                ->with(['featuredPhoto', 'photos'])
                 ->withCount('documents')
                 ->orderBy('created_at', 'desc');
 

@@ -120,6 +120,16 @@ class Project extends Model
         return $this->hasMany(ProjectMilestone::class)->orderBy('sequence');
     }
 
+    public function photos(): HasMany
+    {
+        return $this->hasMany(ProjectPhoto::class)->ordered();
+    }
+
+    public function featuredPhoto(): HasOne
+    {
+        return $this->hasOne(ProjectPhoto::class)->where('is_featured', true);
+    }
+
     /**
      * Get the latest successful project archive.
      */
