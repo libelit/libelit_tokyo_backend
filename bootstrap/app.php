@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'developer' => \App\Http\Middleware\EnsureDeveloper::class,
+            'lender' => \App\Http\Middleware\EnsureLender::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -8,6 +8,7 @@ use App\Exceptions\Documents\S3UploadException;
 use App\Exceptions\Documents\S3VerificationException;
 use App\Models\DeveloperProfile;
 use App\Models\Document;
+use App\Models\LenderProfile;
 use App\Models\DocumentS3Upload;
 use Aws\S3\Exception\S3Exception;
 use Illuminate\Bus\Queueable;
@@ -190,9 +191,11 @@ class UploadDocumentToS3Job implements ShouldQueue
      */
     private function getArchiveType(): string
     {
-        return $this->document->documentable_type === DeveloperProfile::class
-            ? 'kyb'
-            : 'project';
+        return match ($this->document->documentable_type) {
+            DeveloperProfile::class => 'kyb',
+            LenderProfile::class => 'kyc',
+            default => 'project',
+        };
     }
 
     /**

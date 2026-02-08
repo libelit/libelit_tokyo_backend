@@ -77,4 +77,20 @@ class LenderProfile extends Model
     {
         return $this->morphMany(AuditLog::class, 'auditable');
     }
+
+    public function archives(): MorphMany
+    {
+        return $this->morphMany(DocumentArchive::class, 'archivable');
+    }
+
+    /**
+     * Get the latest successful KYC archive.
+     */
+    public function latestArchive()
+    {
+        return $this->morphOne(DocumentArchive::class, 'archivable')
+            ->where('archive_type', 'kyc')
+            ->successful()
+            ->latest();
+    }
 }

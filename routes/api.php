@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\Developer\DeveloperProfileController;
 use App\Http\Controllers\Api\Developer\DeveloperKybController;
 use App\Http\Controllers\Api\Developer\DeveloperProjectController;
 use App\Http\Controllers\Api\Developer\ProjectDocumentController;
 use App\Http\Controllers\Api\Developer\ProjectMilestoneController;
+use App\Http\Controllers\Api\Lender\LenderKybController;
+use App\Http\Controllers\Api\Lender\LenderProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,9 +23,6 @@ Route::middleware(['api'])
             Route::get('/user', function (Request $request) {
                 return $request->user();
             });
-
-            // Projects (public - for lenders)
-            Route::get('/projects', [ProjectController::class, 'index']);
 
             // Developer Routes
             Route::prefix('developer')->middleware(['developer'])->group(function () {
@@ -61,6 +59,20 @@ Route::middleware(['api'])
                 Route::get('projects/{projectId}/milestones/{milestoneId}/proofs', [ProjectMilestoneController::class, 'listProofs']);
                 Route::post('projects/{projectId}/milestones/{milestoneId}/proofs', [ProjectMilestoneController::class, 'uploadProofs']);
                 Route::delete('projects/{projectId}/milestones/{milestoneId}/proofs/{proofId}', [ProjectMilestoneController::class, 'deleteProof']);
+            });
+
+            // Lender Routes
+            Route::prefix('lender')->middleware(['lender'])->group(function () {
+                // KYB
+                Route::get('kyb/documents', [LenderKybController::class, 'index']);
+                Route::get('kyb/documents/{id}', [LenderKybController::class, 'show']);
+                Route::post('kyb/documents', [LenderKybController::class, 'store']);
+                Route::delete('kyb/documents/{id}', [LenderKybController::class, 'destroy']);
+                Route::post('kyb/submit', [LenderKybController::class, 'submit']);
+
+                // Projects (requires KYC approval)
+                Route::get('projects', [LenderProjectController::class, 'index']);
+                Route::get('projects/{id}', [LenderProjectController::class, 'show']);
             });
         });
 });
