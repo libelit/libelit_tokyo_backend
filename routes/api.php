@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Developer\DeveloperProjectController;
 use App\Http\Controllers\Api\Developer\ProjectDocumentController;
 use App\Http\Controllers\Api\Developer\ProjectMilestoneController;
 use App\Http\Controllers\Api\Lender\LenderKybController;
+use App\Http\Controllers\Api\Lender\LenderProfileController;
 use App\Http\Controllers\Api\Lender\LenderProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -63,6 +64,9 @@ Route::middleware(['api'])
 
             // Lender Routes
             Route::prefix('lender')->middleware(['lender'])->group(function () {
+                // Profile
+                Route::get('profile', [LenderProfileController::class, 'show']);
+
                 // KYB
                 Route::get('kyb/documents', [LenderKybController::class, 'index']);
                 Route::get('kyb/documents/{id}', [LenderKybController::class, 'show']);

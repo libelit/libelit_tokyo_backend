@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('lender_type')->nullable();
             $table->string('company_name')->nullable();
             $table->text('address')->nullable();
-            $table->string('kyb_status')->default('pending')->nullable();
+            $table->string('kyb_status')->default('not_started')->nullable();
             $table->timestamp('kyb_submitted_at')->nullable();
             $table->timestamp('kyb_approved_at')->nullable();
             $table->foreignId('kyb_approved_by')->nullable()->constrained('users');
