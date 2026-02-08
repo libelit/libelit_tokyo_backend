@@ -31,7 +31,7 @@ class ProjectsRelationManager extends RelationManager
                         ProjectTypeEnum::INDUSTRIAL => 'gray',
                         ProjectTypeEnum::LAND => 'success',
                     }),
-                TextColumn::make('funding_goal')
+                TextColumn::make('loan_amount')
                     ->money('USD')
                     ->sortable(),
                 TextColumn::make('status')

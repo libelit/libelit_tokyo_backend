@@ -32,11 +32,11 @@ class StoreProjectRequest extends FormRequest
             'address' => ['required', 'string', 'max:500'],
             'city' => ['required', 'string', 'max:100'],
             'country' => ['required', 'string', 'max:100'],
-            'funding_goal' => ['required', 'numeric', 'min:1000'],
+            'loan_amount' => ['required', 'numeric', 'min:1000'],
             'min_investment' => ['required', 'numeric', 'min:100'],
-            'expected_return' => ['required', 'numeric', 'min:0', 'max:100'],
-            'loan_term_months' => ['required', 'integer', 'min:1', 'max:120'],
-            'ltv_ratio' => ['required', 'numeric', 'min:0', 'max:100'],
+            'currency' => ['required', 'string', 'max:100'],
+            'construction_start_date' => ['nullable', 'date'],
+            'construction_end_date' => ['nullable', 'date', 'after_or_equal:construction_start_date'],
         ];
     }
 

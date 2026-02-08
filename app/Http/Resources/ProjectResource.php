@@ -30,7 +30,7 @@ class ProjectResource extends JsonResource
             // If investments relationship fails, default to 0
         }
 
-        $fundingGoal = (float) ($this->funding_goal ?? 0);
+        $loanAmount = (float) ($this->loan_amount ?? 0);
 
         return [
             'id' => $this->id,
@@ -42,17 +42,13 @@ class ProjectResource extends JsonResource
             'address' => $this->address,
             'city' => $this->city,
             'country' => $this->country,
-            'funding_goal' => $fundingGoal,
+            'loan_amount' => $loanAmount,
             'amount_raised' => $amountRaised,
-            'funding_progress' => $fundingGoal > 0
-                ? round(($amountRaised / $fundingGoal) * 100, 2)
+            'funding_progress' => $loanAmount > 0
+                ? round(($amountRaised / $loanAmount) * 100, 2)
                 : 0,
             'currency' => $this->currency ?? 'USD',
             'min_investment' => $this->min_investment,
-            'expected_return' => $this->expected_return,
-            'loan_term_months' => $this->loan_term_months,
-            'ltv_ratio' => $this->ltv_ratio,
-            'risk_score' => $this->risk_score,
             'status' => $this->status,
             'status_label' => $this->status?->getLabel(),
             'submitted_at' => $this->submitted_at,
@@ -60,7 +56,8 @@ class ProjectResource extends JsonResource
             'rejection_reason' => $this->rejection_reason,
             'listed_at' => $this->listed_at,
             'funded_at' => $this->funded_at,
-            'completed_at' => $this->completed_at,
+            'construction_start_date' => $this->construction_start_date,
+            'construction_end_date' => $this->construction_end_date,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'developer' => new DeveloperProfileResource($this->whenLoaded('developer')),

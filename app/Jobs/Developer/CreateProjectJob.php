@@ -39,11 +39,10 @@ class CreateProjectJob
                     'address' => $this->data['address'] ?? null,
                     'city' => $this->data['city'] ?? null,
                     'country' => $this->data['country'] ?? null,
-                    'funding_goal' => $this->data['funding_goal'],
+                    'loan_amount' => $this->data['loan_amount'],
                     'min_investment' => $this->data['min_investment'],
-                    'expected_return' => $this->data['expected_return'],
-                    'loan_term_months' => $this->data['loan_term_months'],
-                    'ltv_ratio' => $this->data['ltv_ratio'] ?? null,
+                    'construction_start_date' => $this->data['construction_start_date'] ?? null,
+                    'construction_end_date' => $this->data['construction_end_date'] ?? null,
                     'status' => ProjectStatusEnum::DRAFT,
                 ]);
 

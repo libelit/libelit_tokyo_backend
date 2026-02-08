@@ -96,14 +96,14 @@ class ProjectMilestone extends Model
     }
 
     /**
-     * Calculate percentage from project funding goal.
+     * Calculate percentage from project loan amount.
      */
     public function calculatePercentage(): float
     {
-        $fundingGoal = $this->project?->funding_goal ?? 0;
-        if ($fundingGoal <= 0) {
+        $loanAmount = $this->project?->loan_amount ?? 0;
+        if ($loanAmount <= 0) {
             return 0;
         }
-        return round(($this->amount / $fundingGoal) * 100, 2);
+        return round(($this->amount / $loanAmount) * 100, 2);
     }
 }

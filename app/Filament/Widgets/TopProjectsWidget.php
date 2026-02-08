@@ -10,7 +10,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class TopProjectsWidget extends BaseWidget
 {
-    protected static ?string $heading = 'Top Projects by Funding Goal';
+    protected static ?string $heading = 'Top Projects by Loan Amount';
 
     protected static ?int $sort = 6;
 
@@ -26,7 +26,7 @@ class TopProjectsWidget extends BaseWidget
                         ProjectStatusEnum::FUNDED,
                         ProjectStatusEnum::COMPLETED,
                     ])
-                    ->orderByDesc('funding_goal')
+                    ->orderByDesc('loan_amount')
                     ->limit(5)
             )
             ->columns([
@@ -36,8 +36,8 @@ class TopProjectsWidget extends BaseWidget
                 TextColumn::make('developer.company_name')
                     ->label('Developer')
                     ->limit(15),
-                TextColumn::make('funding_goal')
-                    ->label('Goal')
+                TextColumn::make('loan_amount')
+                    ->label('Loan Amount')
                     ->money('USD')
                     ->sortable(),
                 TextColumn::make('status')

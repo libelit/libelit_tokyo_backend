@@ -88,14 +88,14 @@ class SubmitProjectJob
             }
 
             $totalMilestoneAmount = $milestones->sum('amount');
-            $fundingGoal = (float) $project->funding_goal;
+            $loanAmount = (float) $project->loan_amount;
 
-            if (abs($totalMilestoneAmount - $fundingGoal) > 0.01) {
+            if (abs($totalMilestoneAmount - $loanAmount) > 0.01) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Total milestone amounts must equal the project funding goal.',
+                    'message' => 'Total milestone amounts must equal the project loan amount.',
                     'milestone_total' => $totalMilestoneAmount,
-                    'funding_goal' => $fundingGoal,
+                    'loan_amount' => $loanAmount,
                 ], 422);
             }
 

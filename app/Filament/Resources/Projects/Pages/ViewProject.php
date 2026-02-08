@@ -132,7 +132,6 @@ class ViewProject extends ViewRecord
                 ->action(function () {
                     $this->record->update([
                         'status' => ProjectStatusEnum::COMPLETED,
-                        'completed_at' => now(),
                     ]);
 
                     Notification::make()

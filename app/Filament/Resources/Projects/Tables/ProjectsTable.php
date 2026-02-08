@@ -47,8 +47,8 @@ class ProjectsTable
                         ProjectTypeEnum::INDUSTRIAL => 'gray',
                         ProjectTypeEnum::LAND => 'primary',
                     }),
-                TextColumn::make('funding_goal')
-                    ->label('Funding Goal')
+                TextColumn::make('loan_amount')
+                    ->label('Loan Amount')
                     ->money(fn ($record) => $record->currency ?? 'USD')
                     ->sortable(),
                 TextColumn::make('status')
@@ -63,16 +63,6 @@ class ProjectsTable
                         ProjectStatusEnum::FUNDED => 'primary',
                         ProjectStatusEnum::COMPLETED => 'success',
                     }),
-                TextColumn::make('risk_score')
-                    ->badge()
-                    ->color(fn (?int $state): string => match (true) {
-                        $state === null => 'gray',
-                        $state >= 1 && $state <= 3 => 'success',
-                        $state >= 4 && $state <= 5 => 'warning',
-                        $state >= 6 && $state <= 7 => 'danger',
-                        default => 'gray',
-                    })
-                    ->sortable(),
                 TextColumn::make('submitted_at')
                     ->label('Submitted')
                     ->dateTime('M d, Y')
@@ -90,16 +80,6 @@ class ProjectsTable
                 SelectFilter::make('project_type')
                     ->options(ProjectTypeEnum::class)
                     ->multiple(),
-                SelectFilter::make('risk_score')
-                    ->options([
-                        1 => '1',
-                        2 => '2',
-                        3 => '3',
-                        4 => '4',
-                        5 => '5',
-                        6 => '6',
-                        7 => '7',
-                    ]),
                 SelectFilter::make('developer_id')
                     ->relationship('developer', 'company_name')
                     ->label('Developer')

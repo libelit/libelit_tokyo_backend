@@ -28,11 +28,10 @@ class UpdateProjectRequest extends FormRequest
             'address' => ['sometimes', 'string', 'max:500'],
             'city' => ['sometimes', 'string', 'max:100'],
             'country' => ['sometimes', 'string', 'max:100'],
-            'funding_goal' => ['sometimes', 'numeric', 'min:1000'],
+            'loan_amount' => ['sometimes', 'numeric', 'min:1000'],
             'min_investment' => ['sometimes', 'numeric', 'min:100'],
-            'expected_return' => ['sometimes', 'numeric', 'min:0', 'max:100'],
-            'loan_term_months' => ['sometimes', 'integer', 'min:1', 'max:120'],
-            'ltv_ratio' => ['sometimes', 'numeric', 'min:0', 'max:100'],
+            'construction_start_date' => ['nullable', 'date'],
+            'construction_end_date' => ['nullable', 'date', 'after_or_equal:construction_start_date'],
         ];
     }
 }

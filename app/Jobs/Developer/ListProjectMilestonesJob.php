@@ -55,8 +55,8 @@ class ListProjectMilestonesJob
                             : 0,
                         'total_amount' => (float) $totalAmount,
                         'paid_amount' => (float) $paidAmount,
-                        'funding_goal' => (float) $project->funding_goal,
-                        'allocation_complete' => abs($totalAmount - $project->funding_goal) < 0.01,
+                        'loan_amount' => (float) $project->loan_amount,
+                        'allocation_complete' => abs($totalAmount - $project->loan_amount) < 0.01,
                     ],
                 ],
             ]);

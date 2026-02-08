@@ -27,13 +27,9 @@ class Project extends Model
         'city',
         'country',
         'address',
-        'funding_goal',
+        'loan_amount',
         'currency',
         'min_investment',
-        'expected_return',
-        'loan_term_months',
-        'ltv_ratio',
-        'risk_score',
         'status',
         'submitted_at',
         'approved_at',
@@ -41,22 +37,21 @@ class Project extends Model
         'rejection_reason',
         'listed_at',
         'funded_at',
-        'completed_at',
+        'construction_start_date',
+        'construction_end_date',
     ];
 
     protected $casts = [
         'project_type' => ProjectTypeEnum::class,
-        'funding_goal' => 'decimal:2',
+        'loan_amount' => 'decimal:2',
         'min_investment' => 'decimal:2',
-        'expected_return' => 'decimal:2',
-        'ltv_ratio' => 'decimal:2',
-        'risk_score' => 'integer',
         'status' => ProjectStatusEnum::class,
         'submitted_at' => 'datetime',
         'approved_at' => 'datetime',
         'listed_at' => 'datetime',
         'funded_at' => 'datetime',
-        'completed_at' => 'datetime',
+        'construction_start_date' => 'date',
+        'construction_end_date' => 'date',
     ];
 
     protected static function boot()

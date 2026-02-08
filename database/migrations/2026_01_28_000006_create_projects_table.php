@@ -18,13 +18,9 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->text('address')->nullable();
-            $table->decimal('funding_goal', 18, 2);
+            $table->decimal('loan_amount', 18, 2);
             $table->string('currency', 3)->default('USD');
             $table->decimal('min_investment', 18, 2)->default(0);
-            $table->decimal('expected_return', 5, 2)->nullable();
-            $table->integer('loan_term_months')->nullable();
-            $table->decimal('ltv_ratio', 5, 2)->nullable();
-            $table->unsignedTinyInteger('risk_score')->nullable();
             $table->string('status')->default('draft');
             $table->timestamp('submitted_at')->nullable();
             $table->timestamp('approved_at')->nullable();
@@ -32,7 +28,8 @@ return new class extends Migration
             $table->text('rejection_reason')->nullable();
             $table->timestamp('listed_at')->nullable();
             $table->timestamp('funded_at')->nullable();
-            $table->timestamp('completed_at')->nullable();
+            $table->date('construction_start_date')->nullable();
+            $table->date('construction_end_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

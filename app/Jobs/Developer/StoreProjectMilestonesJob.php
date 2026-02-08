@@ -45,18 +45,18 @@ class StoreProjectMilestonesJob
                 ], 403);
             }
 
-            // Validate total amount equals funding goal
+            // Validate total amount equals loan amount
             $totalAmount = collect($this->milestones)->sum('amount');
-            $fundingGoal = (float) $project->funding_goal;
+            $loanAmount = (float) $project->loan_amount;
 
-            if (abs($totalAmount - $fundingGoal) > 0.01) {
+            if (abs($totalAmount - $loanAmount) > 0.01) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Total milestone amounts must equal the project funding goal.',
+                    'message' => 'Total milestone amounts must equal the project loan amount.',
                     'data' => [
                         'total_amount' => $totalAmount,
-                        'funding_goal' => $fundingGoal,
-                        'difference' => $fundingGoal - $totalAmount,
+                        'loan_amount' => $loanAmount,
+                        'difference' => $loanAmount - $totalAmount,
                     ],
                 ], 422);
             }
@@ -82,8 +82,8 @@ class StoreProjectMilestonesJob
             // Create new milestones
             $createdMilestones = [];
             foreach ($this->milestones as $index => $milestoneData) {
-                $percentage = $fundingGoal > 0
-                    ? round(($milestoneData['amount'] / $fundingGoal) * 100, 2)
+                $percentage = $loanAmount > 0
+                    ? round(($milestoneData['amount'] / $loanAmount) * 100, 2)
                     : 0;
 
                 $milestone = $project->milestones()->create([

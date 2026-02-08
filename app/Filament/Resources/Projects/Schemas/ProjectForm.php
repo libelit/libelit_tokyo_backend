@@ -77,8 +77,8 @@ class ProjectForm
                 Section::make('Financial Details')
                     ->columns(3)
                     ->schema([
-                        TextInput::make('funding_goal')
-                            ->label('Funding Goal')
+                        TextInput::make('loan_amount')
+                            ->label('Loan Amount')
                             ->numeric()
                             ->prefix('$')
                             ->required(),
@@ -97,36 +97,6 @@ class ProjectForm
                             ])
                             ->default('USD')
                             ->required(),
-                        TextInput::make('expected_return')
-                            ->label('Expected Return (%)')
-                            ->numeric()
-                            ->suffix('%')
-                            ->step(0.01),
-                        TextInput::make('loan_term_months')
-                            ->label('Loan Term (Months)')
-                            ->numeric()
-                            ->integer(),
-                        TextInput::make('ltv_ratio')
-                            ->label('LTV Ratio (%)')
-                            ->numeric()
-                            ->suffix('%')
-                            ->step(0.01),
-                    ]),
-
-                Section::make('Risk Assessment')
-                    ->columns(2)
-                    ->schema([
-                        Select::make('risk_score')
-                            ->options([
-                                1 => '1 (Low Risk)',
-                                2 => '2 (Low Risk)',
-                                3 => '3 (Low Risk)',
-                                4 => '4 (Medium Risk)',
-                                5 => '5 (Medium Risk)',
-                                6 => '6 (High Risk)',
-                                7 => '7 (High Risk)',
-                            ])
-                            ->default(4),
                     ]),
 
                 Section::make('Approval Information')
@@ -150,14 +120,25 @@ class ProjectForm
                     ->hiddenOn('create'),
 
                 Section::make('Timeline')
-                    ->columns(3)
+                    ->columns(2)
                     ->schema([
                         DateTimePicker::make('listed_at')
                             ->label('Listed At'),
                         DateTimePicker::make('funded_at')
                             ->label('Funded At'),
-                        DateTimePicker::make('completed_at')
-                            ->label('Completed At'),
+                    ])
+                    ->collapsible(),
+
+                Section::make('Construction Timeline')
+                    ->columns(2)
+                    ->schema([
+                        DateTimePicker::make('construction_start_date')
+                            ->label('Construction Start Date')
+                            ->native(false),
+                        DateTimePicker::make('construction_end_date')
+                            ->label('Construction End Date')
+                            ->native(false)
+                            ->afterOrEqual('construction_start_date'),
                     ])
                     ->collapsible(),
             ]);

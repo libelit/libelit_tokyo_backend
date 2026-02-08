@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             DeveloperSeeder::class,
             LenderSeeder::class,
-            ProjectSeeder::class,
-            InvestmentSeeder::class,
+//            ProjectSeeder::class,
+//            InvestmentSeeder::class,
         ]);
     }
 }
