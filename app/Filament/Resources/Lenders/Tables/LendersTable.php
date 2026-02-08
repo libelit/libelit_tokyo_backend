@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Lenders\Tables;
 
-use App\Enums\AmlStatusEnum;
 use App\Enums\LenderTypeEnum;
 use App\Enums\KycStatusEnum;
 use Filament\Actions\BulkActionGroup;
@@ -47,18 +46,11 @@ class LendersTable
                     ->label('KYC')
                     ->badge()
                     ->color(fn (KycStatusEnum $state): string => match ($state) {
+                        KycStatusEnum::NOT_STARTED => 'gray',
                         KycStatusEnum::PENDING => 'warning',
                         KycStatusEnum::UNDER_REVIEW => 'info',
                         KycStatusEnum::APPROVED => 'success',
                         KycStatusEnum::REJECTED => 'danger',
-                    }),
-                TextColumn::make('aml_status')
-                    ->label('AML')
-                    ->badge()
-                    ->color(fn (AmlStatusEnum $state): string => match ($state) {
-                        AmlStatusEnum::PENDING => 'warning',
-                        AmlStatusEnum::CLEARED => 'success',
-                        AmlStatusEnum::FLAGGED => 'danger',
                     }),
                 TextColumn::make('investments_count')
                     ->label('Investments')
@@ -77,8 +69,6 @@ class LendersTable
                     ->options(LenderTypeEnum::class),
                 SelectFilter::make('kyc_status')
                     ->options(KycStatusEnum::class),
-                SelectFilter::make('aml_status')
-                    ->options(AmlStatusEnum::class),
                 TernaryFilter::make('is_active')
                     ->label('Active'),
                 TrashedFilter::make(),

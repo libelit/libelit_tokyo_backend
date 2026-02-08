@@ -2,12 +2,9 @@
 
 namespace App\Filament\Resources\Lenders\Schemas;
 
-use App\Enums\AccreditationStatusEnum;
-use App\Enums\AmlStatusEnum;
 use App\Enums\LenderTypeEnum;
 use App\Enums\KycStatusEnum;
 use App\Models\User;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
@@ -58,7 +55,7 @@ class LenderForm
                         Select::make('kyc_status')
                             ->options(KycStatusEnum::class)
                             ->required()
-                            ->default(KycStatusEnum::PENDING)
+                            ->default(KycStatusEnum::NOT_STARTED)
                             ->live(),
                         Select::make('kyc_approved_by')
                             ->label('Approved By')
@@ -75,22 +72,6 @@ class LenderForm
                             ->rows(2)
                             ->columnSpanFull()
                             ->visible(fn ($get) => $get('kyc_status') === KycStatusEnum::REJECTED->value),
-                    ]),
-
-                Section::make('AML & Accreditation')
-                    ->columns(2)
-                    ->schema([
-                        Select::make('aml_status')
-                            ->label('AML Status')
-                            ->options(AmlStatusEnum::class)
-                            ->default(AmlStatusEnum::PENDING),
-                        DateTimePicker::make('aml_checked_at')
-                            ->label('AML Checked At'),
-                        Select::make('accreditation_status')
-                            ->options(AccreditationStatusEnum::class)
-                            ->default(AccreditationStatusEnum::PENDING),
-                        DatePicker::make('accreditation_expires_at')
-                            ->label('Accreditation Expires'),
                     ]),
 
                 Section::make('Status')

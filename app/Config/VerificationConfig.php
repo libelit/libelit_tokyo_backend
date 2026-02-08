@@ -101,21 +101,21 @@ class VerificationConfig
         return $user->$relation;
     }
 
-    /**
-     * Get allowed document type values for validation.
-     */
-    public static function getAllowedDocumentTypeValues(string $type): array
-    {
-        $config = self::get($type);
-        return array_map(fn ($enum) => $enum->value, $config['allowed_document_types']);
-    }
-
-    /**
-     * Get required document type values.
-     */
-    public static function getRequiredDocumentTypeValues(string $type): array
-    {
-        $config = self::get($type);
-        return array_map(fn ($enum) => $enum->value, $config['required_document_types']);
-    }
+//    /**
+//     * Get allowed document type values for validation.
+//     */
+//    public static function getAllowedDocumentTypeValues(string $type): array
+//    {
+//        $config = self::get($type);
+//        return array_map(fn ($enum) => $enum->value, $config['allowed_document_types']);
+//    }
+//
+//    /**
+//     * Get required document type values.
+//     */
+//    public static function getRequiredDocumentTypeValues(string $type): array
+//    {
+//        $config = self::get($type);
+//        return array_map(fn ($enum) => $enum->value, $config['required_document_types']);
+//    }
 }

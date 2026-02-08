@@ -2,7 +2,6 @@
 
 namespace App\Filament\Widgets;
 
-use App\Enums\AmlStatusEnum;
 use App\Enums\KycStatusEnum;
 use App\Models\LenderProfile;
 use Filament\Tables\Columns\TextColumn;
@@ -22,11 +21,7 @@ class PendingLenderApprovalsWidget extends BaseWidget
         return $table
             ->query(
                 LenderProfile::query()
-                    ->where(function ($query) {
-                        $query->where('kyc_status', KycStatusEnum::PENDING)
-                            ->orWhere('kyc_status', KycStatusEnum::UNDER_REVIEW)
-                            ->orWhere('aml_status', AmlStatusEnum::PENDING);
-                    })
+                    ->whereIn('kyc_status', [KycStatusEnum::PENDING, KycStatusEnum::UNDER_REVIEW])
             )
             ->columns([
                 TextColumn::make('user.name')
@@ -38,17 +33,11 @@ class PendingLenderApprovalsWidget extends BaseWidget
                     ->label('KYC')
                     ->badge()
                     ->color(fn (KycStatusEnum $state): string => match ($state) {
+                        KycStatusEnum::NOT_STARTED => 'gray',
                         KycStatusEnum::PENDING => 'warning',
                         KycStatusEnum::UNDER_REVIEW => 'info',
-                        default => 'gray',
-                    }),
-                TextColumn::make('aml_status')
-                    ->label('AML')
-                    ->badge()
-                    ->color(fn (AmlStatusEnum $state): string => match ($state) {
-                        AmlStatusEnum::PENDING => 'warning',
-                        AmlStatusEnum::CLEARED => 'success',
-                        AmlStatusEnum::FLAGGED => 'danger',
+                        KycStatusEnum::APPROVED => 'success',
+                        KycStatusEnum::REJECTED => 'danger',
                     }),
                 TextColumn::make('kyc_submitted_at')
                     ->label('Submitted')

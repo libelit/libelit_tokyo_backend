@@ -4,14 +4,17 @@ namespace App\Filament\Resources\Lenders\RelationManagers;
 
 use App\Enums\DocumentTypeEnum;
 use App\Enums\VerificationStatusEnum;
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
@@ -61,13 +64,21 @@ class DocumentsRelationManager extends RelationManager
                     ->badge(),
                 TextColumn::make('title')
                     ->searchable(),
+                TextColumn::make('file_url')
+                    ->label('Document')
+                    ->url(fn ($record) => $record->file_url)
+                    ->openUrlInNewTab()
+                    ->formatStateUsing(fn () => 'View/Download')
+                    ->color('primary'),
                 TextColumn::make('verification_status')
                     ->badge()
                     ->color(fn (VerificationStatusEnum $state): string => match ($state) {
                         VerificationStatusEnum::PENDING => 'warning',
-                        VerificationStatusEnum::VERIFIED => 'success',
+                        VerificationStatusEnum::APPROVED => 'success',
                         VerificationStatusEnum::REJECTED => 'danger',
                     }),
+                TextColumn::make('formatted_file_size')
+                    ->label('Size'),
                 IconColumn::make('is_public')
                     ->boolean(),
                 TextColumn::make('created_at')
@@ -93,6 +104,50 @@ class DocumentsRelationManager extends RelationManager
                     }),
             ])
             ->actions([
+                Action::make('approve')
+                    ->label('Approve')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->visible(fn ($record) => $record->verification_status !== VerificationStatusEnum::APPROVED)
+                    ->action(function ($record) {
+                        $record->update([
+                            'verification_status' => VerificationStatusEnum::APPROVED,
+                            'verified_by' => auth()->id(),
+                            'verified_at' => now(),
+                            'rejection_reason' => null,
+                        ]);
+
+                        Notification::make()
+                            ->title('Document Approved')
+                            ->success()
+                            ->send();
+                    }),
+                Action::make('reject')
+                    ->label('Reject')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->form([
+                        Textarea::make('rejection_reason')
+                            ->label('Rejection Reason')
+                            ->required()
+                            ->rows(3),
+                    ])
+                    ->visible(fn ($record) => $record->verification_status !== VerificationStatusEnum::REJECTED)
+                    ->action(function ($record, array $data) {
+                        $record->update([
+                            'verification_status' => VerificationStatusEnum::REJECTED,
+                            'verified_by' => auth()->id(),
+                            'verified_at' => now(),
+                            'rejection_reason' => $data['rejection_reason'],
+                        ]);
+
+                        Notification::make()
+                            ->title('Document Rejected')
+                            ->danger()
+                            ->send();
+                    }),
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),

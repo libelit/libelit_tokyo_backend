@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Lenders\Pages;
 
-use App\Enums\AmlStatusEnum;
 use App\Enums\KycStatusEnum;
 use App\Filament\Resources\Lenders\LenderResource;
 use Filament\Actions\Action;
@@ -18,6 +17,25 @@ class ViewLender extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('mark_under_review')
+                ->label('Mark Under Review')
+                ->color('warning')
+                ->icon('heroicon-o-eye')
+                ->requiresConfirmation()
+                ->modalHeading('Mark KYC as Under Review')
+                ->modalDescription('This will indicate that you are actively reviewing this lender\'s KYC documents.')
+                ->visible(fn () => $this->record->kyc_status === KycStatusEnum::PENDING)
+                ->action(function () {
+                    $this->record->update([
+                        'kyc_status' => KycStatusEnum::UNDER_REVIEW,
+                    ]);
+
+                    Notification::make()
+                        ->title('KYC Marked as Under Review')
+                        ->success()
+                        ->send();
+                }),
+
             Action::make('approve_kyc')
                 ->label('Approve KYC')
                 ->color('success')
@@ -25,12 +43,14 @@ class ViewLender extends ViewRecord
                 ->requiresConfirmation()
                 ->modalHeading('Approve KYC Verification')
                 ->modalDescription('Are you sure you want to approve this lender\'s KYC verification?')
-                ->visible(fn () => $this->record->kyc_status !== KycStatusEnum::APPROVED)
+                ->visible(fn () => in_array($this->record->kyc_status, [KycStatusEnum::PENDING, KycStatusEnum::UNDER_REVIEW]))
                 ->action(function () {
                     $this->record->update([
                         'kyc_status' => KycStatusEnum::APPROVED,
                         'kyc_approved_at' => now(),
                         'kyc_approved_by' => auth()->id(),
+                        'kyc_rejection_reason' => null,
+                        'is_active' => true,
                     ]);
 
                     Notification::make()
@@ -51,7 +71,7 @@ class ViewLender extends ViewRecord
                         ->required()
                         ->rows(3),
                 ])
-                ->visible(fn () => $this->record->kyc_status !== KycStatusEnum::REJECTED)
+                ->visible(fn () => in_array($this->record->kyc_status, [KycStatusEnum::PENDING, KycStatusEnum::UNDER_REVIEW]))
                 ->action(function (array $data) {
                     $this->record->update([
                         'kyc_status' => KycStatusEnum::REJECTED,
@@ -61,45 +81,6 @@ class ViewLender extends ViewRecord
 
                     Notification::make()
                         ->title('KYC Rejected')
-                        ->danger()
-                        ->send();
-                }),
-
-            Action::make('clear_aml')
-                ->label('Clear AML')
-                ->color('success')
-                ->icon('heroicon-o-shield-check')
-                ->requiresConfirmation()
-                ->visible(fn () => $this->record->aml_status !== AmlStatusEnum::CLEARED)
-                ->action(function () {
-                    $this->record->update([
-                        'aml_status' => AmlStatusEnum::CLEARED,
-                        'aml_checked_at' => now(),
-                        'is_active' => $this->record->kyc_status === KycStatusEnum::APPROVED,
-                    ]);
-
-                    Notification::make()
-                        ->title('AML Cleared')
-                        ->success()
-                        ->send();
-                }),
-
-            Action::make('flag_aml')
-                ->label('Flag AML')
-                ->color('danger')
-                ->icon('heroicon-o-flag')
-                ->requiresConfirmation()
-                ->modalDescription('This will flag this lender for AML concerns and deactivate their account.')
-                ->visible(fn () => $this->record->aml_status !== AmlStatusEnum::FLAGGED)
-                ->action(function () {
-                    $this->record->update([
-                        'aml_status' => AmlStatusEnum::FLAGGED,
-                        'aml_checked_at' => now(),
-                        'is_active' => false,
-                    ]);
-
-                    Notification::make()
-                        ->title('AML Flagged')
                         ->danger()
                         ->send();
                 }),
