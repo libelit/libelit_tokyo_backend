@@ -20,12 +20,7 @@ return new class extends Migration
             $table->boolean('is_featured')->default(false);
             $table->unsignedInteger('sort_order')->default(0);
             $table->foreignId('uploaded_by')->constrained('users');
-            $table->string('storage_disk')->default('local');
-            $table->string('s3_path')->nullable();
-            $table->string('s3_url')->nullable();
-            $table->string('s3_bucket')->nullable();
-            $table->string('s3_status')->default('pending');
-            $table->timestamp('uploaded_to_s3_at')->nullable();
+            $table->string('storage_disk')->default('public');
             $table->timestamps();
             $table->softDeletes();
 

@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->foreignId('developer_id')->constrained('developer_profiles')->onDelete('cascade');
+            $table->foreignId('lender_id')->nullable()->constrained('lender_profiles');
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('project_type');
@@ -34,6 +35,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->index('developer_id');
+            $table->index('lender_id');
             $table->index('status');
             $table->index('project_type');
         });

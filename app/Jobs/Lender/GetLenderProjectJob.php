@@ -35,26 +35,20 @@ class GetLenderProjectJob
                 ], 403);
             }
 
-            // Get invested project IDs
-            $investedProjectIds = $lenderProfile->investments()->pluck('project_id')->toArray();
+            $lenderId = $lenderProfile->id;
 
-            // Public statuses lenders can view
-            $publicStatuses = [
-                ProjectStatusEnum::APPROVED,
-                ProjectStatusEnum::FUNDING,
-                ProjectStatusEnum::FUNDED,
-                ProjectStatusEnum::COMPLETED,
-            ];
-
-            $project = Project::with(['developer.user', 'token', 'milestones', 'documents'])
-                ->withCount('milestones')
+            // Query project with visibility rules:
+            // - SUBMITTED: visible to all lenders (marketplace)
+            // - UNDER_REVIEW/APPROVED/FUNDING/FUNDED/COMPLETED: only visible to the lender who claimed it
+            $project = Project::with(['developer.user', 'lender', 'token', 'milestones', 'documents', 'photos'])
+                ->withCount(['milestones', 'photos'])
                 ->where('id', $this->projectId)
-                ->where(function ($q) use ($publicStatuses, $investedProjectIds) {
-                    $q->whereIn('status', $publicStatuses);
+                ->where(function ($q) use ($lenderId) {
+                    // All lenders can see SUBMITTED projects
+                    $q->where('status', ProjectStatusEnum::SUBMITTED);
 
-                    if (!empty($investedProjectIds)) {
-                        $q->orWhereIn('id', $investedProjectIds);
-                    }
+                    // Lender can also see projects assigned to them (exclusive visibility)
+                    $q->orWhere('lender_id', $lenderId);
                 })
                 ->first();
 

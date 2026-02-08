@@ -66,6 +66,18 @@ class ProjectResource extends JsonResource
             'milestones_count' => $this->whenCounted('milestones'),
             'lenders_count' => $lendersCount,
             'cover_photo_url' => $this->getCoverPhotoUrl(),
+            'photos' => $this->whenLoaded('photos', fn() => $this->photos->map(fn($photo) => [
+                'id' => $photo->id,
+                'uuid' => $photo->uuid,
+                'title' => $photo->title,
+                'file_url' => $photo->file_url,
+                'file_name' => $photo->file_name,
+                'file_size' => $photo->file_size,
+                'mime_type' => $photo->mime_type,
+                'is_featured' => $photo->is_featured,
+                'sort_order' => $photo->sort_order,
+            ])),
+            'photos_count' => $this->whenCounted('photos'),
         ];
     }
 

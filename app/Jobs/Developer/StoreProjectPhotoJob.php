@@ -2,9 +2,7 @@
 
 namespace App\Jobs\Developer;
 
-use App\Enums\DocumentS3StatusEnum;
 use App\Enums\ProjectStatusEnum;
-use App\Jobs\Documents\UploadProjectPhotoToS3Job;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -80,7 +78,7 @@ class StoreProjectPhotoJob
                     $fileName = 'photo_' . time() . '_' . $index . '.' . $extension;
                     $filePath = $file->storeAs('projects/' . $project->uuid . '/photos', $fileName, 'public');
 
-                    // Create photo record
+                    // Create photo record (stored locally on public disk)
                     $photo = $project->photos()->create([
                         'uuid' => $uuid,
                         'file_path' => $filePath,
@@ -91,12 +89,8 @@ class StoreProjectPhotoJob
                         'is_featured' => $isFeatured,
                         'sort_order' => $maxSortOrder + $index + 1,
                         'uploaded_by' => $this->user->id,
-                        'storage_disk' => 'local',
-                        's3_status' => DocumentS3StatusEnum::PENDING,
+                        'storage_disk' => 'public',
                     ]);
-
-                    // Dispatch async job to upload to S3
-                    UploadProjectPhotoToS3Job::dispatch($photo)->delay(now()->addSeconds(5));
 
                     $uploadedPhotos[] = $photo;
                 }

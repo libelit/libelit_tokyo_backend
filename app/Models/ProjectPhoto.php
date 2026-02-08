@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\DocumentS3StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,19 +25,12 @@ class ProjectPhoto extends Model
         'sort_order',
         'uploaded_by',
         'storage_disk',
-        's3_path',
-        's3_url',
-        's3_bucket',
-        's3_status',
-        'uploaded_to_s3_at',
     ];
 
     protected $casts = [
         'file_size' => 'integer',
         'is_featured' => 'boolean',
         'sort_order' => 'integer',
-        's3_status' => DocumentS3StatusEnum::class,
-        'uploaded_to_s3_at' => 'datetime',
     ];
 
     protected static function boot()
@@ -63,40 +55,15 @@ class ProjectPhoto extends Model
     }
 
     /**
-     * Get the file URL (S3 signed URL or local).
+     * Get the file URL from local public storage.
      */
     public function getFileUrlAttribute(): ?string
     {
-        if ($this->storage_disk === 's3' && $this->s3_path) {
-            return $this->getS3SignedUrl();
-        }
-
-        // Fallback to local storage
         if ($this->file_path) {
             return Storage::disk('public')->url($this->file_path);
         }
 
         return null;
-    }
-
-    /**
-     * Generate a signed URL for S3 access.
-     */
-    public function getS3SignedUrl(int $expirationMinutes = 60): ?string
-    {
-        if (!$this->s3_path) {
-            return null;
-        }
-
-        try {
-            return Storage::disk('s3')->temporaryUrl(
-                $this->s3_path,
-                now()->addMinutes($expirationMinutes)
-            );
-        } catch (\Exception $e) {
-            // If signed URL fails, return the direct URL
-            return $this->s3_url;
-        }
     }
 
     /**

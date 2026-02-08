@@ -65,7 +65,6 @@ Route::middleware(['api'])
 
                 // Milestone Proofs
                 Route::get('projects/{projectId}/milestones/{milestoneId}/proofs', [ProjectMilestoneController::class, 'listProofs']);
-                Route::post('projects/{projectId}/milestones/{milestoneId}/proofs', [ProjectMilestoneController::class, 'uploadProofs']);
                 Route::delete('projects/{projectId}/milestones/{milestoneId}/proofs/{proofId}', [ProjectMilestoneController::class, 'deleteProof']);
             });
 

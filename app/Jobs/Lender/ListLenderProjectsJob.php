@@ -39,27 +39,21 @@ class ListLenderProjectsJob
                 ], 403);
             }
 
-            // Get invested project IDs
-            $investedProjectIds = $lenderProfile->investments()->pluck('project_id')->toArray();
+            $lenderId = $lenderProfile->id;
 
-            // Build query - show approved/funded/completed projects + invested projects
+            // Build query
+            // - SUBMITTED: visible to all lenders (marketplace)
+            // - UNDER_REVIEW/APPROVED/FUNDING/FUNDED/COMPLETED: only visible to the lender who claimed it (exclusive)
             $query = Project::query()
-                ->with(['developer.user', 'token'])
-                ->withCount('milestones');
+                ->with(['developer.user', 'lender', 'token', 'photos'])
+                ->withCount(['milestones', 'photos']);
 
-            $publicStatuses = [
-                ProjectStatusEnum::APPROVED,
-                ProjectStatusEnum::FUNDING,
-                ProjectStatusEnum::FUNDED,
-                ProjectStatusEnum::COMPLETED,
-            ];
+            $query->where(function ($q) use ($lenderId) {
+                // All lenders can see SUBMITTED projects (marketplace)
+                $q->where('status', ProjectStatusEnum::SUBMITTED);
 
-            $query->where(function ($q) use ($publicStatuses, $investedProjectIds) {
-                $q->whereIn('status', $publicStatuses);
-
-                if (!empty($investedProjectIds)) {
-                    $q->orWhereIn('id', $investedProjectIds);
-                }
+                // Lender can also see projects assigned to them (exclusive visibility)
+                $q->orWhere('lender_id', $lenderId);
             });
 
             // Filter by status if provided

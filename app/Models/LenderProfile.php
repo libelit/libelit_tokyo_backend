@@ -63,6 +63,11 @@ class LenderProfile extends Model
         return $this->hasMany(Investment::class, 'lender_id');
     }
 
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class, 'lender_id');
+    }
+
     public function documents(): MorphMany
     {
         return $this->morphMany(Document::class, 'documentable');

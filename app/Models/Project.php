@@ -21,6 +21,7 @@ class Project extends Model
     protected $fillable = [
         'uuid',
         'developer_id',
+        'lender_id',
         'title',
         'description',
         'project_type',
@@ -68,6 +69,11 @@ class Project extends Model
     public function developer(): BelongsTo
     {
         return $this->belongsTo(DeveloperProfile::class, 'developer_id');
+    }
+
+    public function lender(): BelongsTo
+    {
+        return $this->belongsTo(LenderProfile::class, 'lender_id');
     }
 
     public function approvedByUser(): BelongsTo
