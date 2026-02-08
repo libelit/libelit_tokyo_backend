@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\AccreditationStatusEnum;
 use App\Enums\AmlStatusEnum;
 use App\Enums\LenderTypeEnum;
-use App\Enums\KycStatusEnum;
+use App\Enums\KybStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,11 +24,11 @@ class LenderProfile extends Model
         'lender_type',
         'company_name',
         'address',
-        'kyc_status',
-        'kyc_submitted_at',
-        'kyc_approved_at',
-        'kyc_approved_by',
-        'kyc_rejection_reason',
+        'kyb_status',
+        'kyb_submitted_at',
+        'kyb_approved_at',
+        'kyb_approved_by',
+        'kyb_rejection_reason',
         'aml_status',
         'aml_checked_at',
         'accreditation_status',
@@ -38,9 +38,9 @@ class LenderProfile extends Model
 
     protected $casts = [
         'lender_type' => LenderTypeEnum::class,
-        'kyc_status' => KycStatusEnum::class,
-        'kyc_submitted_at' => 'datetime',
-        'kyc_approved_at' => 'datetime',
+        'kyb_status' => KybStatusEnum::class,
+        'kyb_submitted_at' => 'datetime',
+        'kyb_approved_at' => 'datetime',
         'aml_status' => AmlStatusEnum::class,
         'aml_checked_at' => 'datetime',
         'accreditation_status' => AccreditationStatusEnum::class,
@@ -55,7 +55,7 @@ class LenderProfile extends Model
 
     public function approvedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'kyc_approved_by');
+        return $this->belongsTo(User::class, 'kyb_approved_by');
     }
 
     public function investments(): HasMany
@@ -84,12 +84,12 @@ class LenderProfile extends Model
     }
 
     /**
-     * Get the latest successful KYC archive.
+     * Get the latest successful KYB archive.
      */
     public function latestArchive()
     {
         return $this->morphOne(DocumentArchive::class, 'archivable')
-            ->where('archive_type', 'kyc')
+            ->where('archive_type', 'kyb')
             ->successful()
             ->latest();
     }

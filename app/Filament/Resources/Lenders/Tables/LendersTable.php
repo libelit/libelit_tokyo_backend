@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Lenders\Tables;
 
 use App\Enums\LenderTypeEnum;
-use App\Enums\KycStatusEnum;
+use App\Enums\KybStatusEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -42,15 +42,15 @@ class LendersTable
                     ->searchable()
                     ->toggleable()
                     ->placeholder('—'),
-                TextColumn::make('kyc_status')
-                    ->label('KYC')
+                TextColumn::make('kyb_status')
+                    ->label('KYB')
                     ->badge()
-                    ->color(fn (KycStatusEnum $state): string => match ($state) {
-                        KycStatusEnum::NOT_STARTED => 'gray',
-                        KycStatusEnum::PENDING => 'warning',
-                        KycStatusEnum::UNDER_REVIEW => 'info',
-                        KycStatusEnum::APPROVED => 'success',
-                        KycStatusEnum::REJECTED => 'danger',
+                    ->color(fn (KybStatusEnum $state): string => match ($state) {
+                        KybStatusEnum::NOT_STARTED => 'gray',
+                        KybStatusEnum::PENDING => 'warning',
+                        KybStatusEnum::UNDER_REVIEW => 'info',
+                        KybStatusEnum::APPROVED => 'success',
+                        KybStatusEnum::REJECTED => 'danger',
                     }),
                 TextColumn::make('investments_count')
                     ->label('Investments')
@@ -67,8 +67,8 @@ class LendersTable
             ->filters([
                 SelectFilter::make('lender_type')
                     ->options(LenderTypeEnum::class),
-                SelectFilter::make('kyc_status')
-                    ->options(KycStatusEnum::class),
+                SelectFilter::make('kyb_status')
+                    ->options(KybStatusEnum::class),
                 TernaryFilter::make('is_active')
                     ->label('Active'),
                 TrashedFilter::make(),

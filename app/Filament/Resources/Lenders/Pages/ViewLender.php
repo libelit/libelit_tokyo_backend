@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Lenders\Pages;
 
-use App\Enums\KycStatusEnum;
+use App\Enums\KybStatusEnum;
 use App\Filament\Resources\Lenders\LenderResource;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
@@ -22,65 +22,65 @@ class ViewLender extends ViewRecord
                 ->color('warning')
                 ->icon('heroicon-o-eye')
                 ->requiresConfirmation()
-                ->modalHeading('Mark KYC as Under Review')
-                ->modalDescription('This will indicate that you are actively reviewing this lender\'s KYC documents.')
-                ->visible(fn () => $this->record->kyc_status === KycStatusEnum::PENDING)
+                ->modalHeading('Mark KYB as Under Review')
+                ->modalDescription('This will indicate that you are actively reviewing this lender\'s KYB documents.')
+                ->visible(fn () => $this->record->kyb_status === KybStatusEnum::PENDING)
                 ->action(function () {
                     $this->record->update([
-                        'kyc_status' => KycStatusEnum::UNDER_REVIEW,
+                        'kyb_status' => KybStatusEnum::UNDER_REVIEW,
                     ]);
 
                     Notification::make()
-                        ->title('KYC Marked as Under Review')
+                        ->title('KYB Marked as Under Review')
                         ->success()
                         ->send();
                 }),
 
-            Action::make('approve_kyc')
-                ->label('Approve KYC')
+            Action::make('approve_kyb')
+                ->label('Approve KYB')
                 ->color('success')
                 ->icon('heroicon-o-check-circle')
                 ->requiresConfirmation()
-                ->modalHeading('Approve KYC Verification')
-                ->modalDescription('Are you sure you want to approve this lender\'s KYC verification?')
-                ->visible(fn () => in_array($this->record->kyc_status, [KycStatusEnum::PENDING, KycStatusEnum::UNDER_REVIEW]))
+                ->modalHeading('Approve KYB Verification')
+                ->modalDescription('Are you sure you want to approve this lender\'s KYB verification?')
+                ->visible(fn () => in_array($this->record->kyb_status, [KybStatusEnum::PENDING, KybStatusEnum::UNDER_REVIEW]))
                 ->action(function () {
                     $this->record->update([
-                        'kyc_status' => KycStatusEnum::APPROVED,
-                        'kyc_approved_at' => now(),
-                        'kyc_approved_by' => auth()->id(),
-                        'kyc_rejection_reason' => null,
+                        'kyb_status' => KybStatusEnum::APPROVED,
+                        'kyb_approved_at' => now(),
+                        'kyb_approved_by' => auth()->id(),
+                        'kyb_rejection_reason' => null,
                         'is_active' => true,
                     ]);
 
                     Notification::make()
-                        ->title('KYC Approved')
+                        ->title('KYB Approved')
                         ->success()
                         ->send();
                 }),
 
-            Action::make('reject_kyc')
-                ->label('Reject KYC')
+            Action::make('reject_kyb')
+                ->label('Reject KYB')
                 ->color('danger')
                 ->icon('heroicon-o-x-circle')
                 ->requiresConfirmation()
-                ->modalHeading('Reject KYC Verification')
+                ->modalHeading('Reject KYB Verification')
                 ->form([
                     Textarea::make('rejection_reason')
                         ->label('Rejection Reason')
                         ->required()
                         ->rows(3),
                 ])
-                ->visible(fn () => in_array($this->record->kyc_status, [KycStatusEnum::PENDING, KycStatusEnum::UNDER_REVIEW]))
+                ->visible(fn () => in_array($this->record->kyb_status, [KybStatusEnum::PENDING, KybStatusEnum::UNDER_REVIEW]))
                 ->action(function (array $data) {
                     $this->record->update([
-                        'kyc_status' => KycStatusEnum::REJECTED,
-                        'kyc_rejection_reason' => $data['rejection_reason'],
+                        'kyb_status' => KybStatusEnum::REJECTED,
+                        'kyb_rejection_reason' => $data['rejection_reason'],
                         'is_active' => false,
                     ]);
 
                     Notification::make()
-                        ->title('KYC Rejected')
+                        ->title('KYB Rejected')
                         ->danger()
                         ->send();
                 }),

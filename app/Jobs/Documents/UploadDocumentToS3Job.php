@@ -193,7 +193,7 @@ class UploadDocumentToS3Job implements ShouldQueue
     {
         return match ($this->document->documentable_type) {
             DeveloperProfile::class => 'kyb',
-            LenderProfile::class => 'kyc',
+            LenderProfile::class => 'lender_kyb',
             default => 'project',
         };
     }

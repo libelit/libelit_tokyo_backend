@@ -3,7 +3,6 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\KybStatusEnum;
-use App\Enums\KycStatusEnum;
 use App\Models\LenderProfile;
 use App\Models\DeveloperProfile;
 use Filament\Tables\Columns\TextColumn;
@@ -17,7 +16,7 @@ class PendingApprovalsWidget extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Pending KYB/KYC Approvals';
+    protected static ?string $heading = 'Pending KYB Approvals';
 
     public function table(Table $table): Table
     {

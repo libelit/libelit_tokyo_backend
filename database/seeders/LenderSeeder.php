@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Enums\AccreditationStatusEnum;
 use App\Enums\AmlStatusEnum;
 use App\Enums\LenderTypeEnum;
-use App\Enums\KycStatusEnum;
+use App\Enums\KybStatusEnum;
 use App\Enums\UserStatusEnum;
 use App\Enums\UserTypeEnum;
 use App\Models\LenderProfile;
@@ -28,9 +28,9 @@ class LenderSeeder extends Seeder
                 'profile' => [
                     'lender_type' => LenderTypeEnum::TIER_1,
                     'address' => 'Palm Jumeirah, Villa 42, Dubai, UAE',
-                    'kyc_status' => KycStatusEnum::APPROVED,
-                    'kyc_submitted_at' => now()->subDays(45),
-                    'kyc_approved_at' => now()->subDays(40),
+                    'kyb_status' => KybStatusEnum::APPROVED,
+                    'kyb_submitted_at' => now()->subDays(45),
+                    'kyb_approved_at' => now()->subDays(40),
                     'aml_status' => AmlStatusEnum::CLEARED,
                     'aml_checked_at' => now()->subDays(40),
                     'accreditation_status' => AccreditationStatusEnum::VERIFIED,
@@ -49,9 +49,9 @@ class LenderSeeder extends Seeder
                     'lender_type' => LenderTypeEnum::TIER_1,
                     'company_name' => 'Swiss Capital Partners AG',
                     'address' => 'Bahnhofstrasse 45, 8001 Zurich, Switzerland',
-                    'kyc_status' => KycStatusEnum::APPROVED,
-                    'kyc_submitted_at' => now()->subDays(60),
-                    'kyc_approved_at' => now()->subDays(55),
+                    'kyb_status' => KybStatusEnum::APPROVED,
+                    'kyb_submitted_at' => now()->subDays(60),
+                    'kyb_approved_at' => now()->subDays(55),
                     'aml_status' => AmlStatusEnum::CLEARED,
                     'aml_checked_at' => now()->subDays(55),
                     'accreditation_status' => AccreditationStatusEnum::VERIFIED,
@@ -70,8 +70,8 @@ class LenderSeeder extends Seeder
                     'lender_type' => LenderTypeEnum::TIER_2,
                     'company_name' => 'Pacific Ventures Fund LP',
                     'address' => 'Marina Bay Financial Centre, Tower 3, #35-01, Singapore 018982',
-                    'kyc_status' => KycStatusEnum::UNDER_REVIEW,
-                    'kyc_submitted_at' => now()->subDays(7),
+                    'kyb_status' => KybStatusEnum::UNDER_REVIEW,
+                    'kyb_submitted_at' => now()->subDays(7),
                     'aml_status' => AmlStatusEnum::PENDING,
                     'accreditation_status' => AccreditationStatusEnum::PENDING,
                     'is_active' => true,
@@ -87,7 +87,7 @@ class LenderSeeder extends Seeder
                 'profile' => [
                     'lender_type' => LenderTypeEnum::TIER_3,
                     'address' => '1600 Pennsylvania Ave, Washington, DC 20500',
-                    'kyc_status' => KycStatusEnum::PENDING,
+                    'kyb_status' => KybStatusEnum::PENDING,
                     'aml_status' => AmlStatusEnum::PENDING,
                     'accreditation_status' => AccreditationStatusEnum::PENDING,
                     'is_active' => false,
@@ -103,9 +103,9 @@ class LenderSeeder extends Seeder
                 'profile' => [
                     'lender_type' => LenderTypeEnum::TIER_2,
                     'address' => '221B Baker Street, London NW1 6XE',
-                    'kyc_status' => KycStatusEnum::REJECTED,
-                    'kyc_submitted_at' => now()->subDays(20),
-                    'kyc_rejection_reason' => 'Identity document provided is not clear. Please resubmit with a higher quality scan.',
+                    'kyb_status' => KybStatusEnum::REJECTED,
+                    'kyb_submitted_at' => now()->subDays(20),
+                    'kyb_rejection_reason' => 'Identity document provided is not clear. Please resubmit with a higher quality scan.',
                     'aml_status' => AmlStatusEnum::PENDING,
                     'accreditation_status' => AccreditationStatusEnum::PENDING,
                     'is_active' => false,

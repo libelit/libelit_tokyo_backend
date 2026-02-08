@@ -4,14 +4,13 @@ namespace App\Config;
 
 use App\Enums\DocumentTypeEnum;
 use App\Enums\KybStatusEnum;
-use App\Enums\KycStatusEnum;
 use App\Models\DeveloperProfile;
 use App\Models\LenderProfile;
 
 class VerificationConfig
 {
     public const TYPE_KYB = 'kyb';
-    public const TYPE_KYC = 'kyc';
+    public const TYPE_LENDER_KYB = 'lender_kyb';
 
     /**
      * Get configuration for a verification type.
@@ -20,7 +19,7 @@ class VerificationConfig
     {
         return match ($type) {
             self::TYPE_KYB => self::getKybConfig(),
-            self::TYPE_KYC => self::getKycConfig(),
+            self::TYPE_LENDER_KYB => self::getLenderKybConfig(),
             default => throw new \InvalidArgumentException("Unknown verification type: {$type}"),
         };
     }
@@ -59,35 +58,39 @@ class VerificationConfig
     }
 
     /**
-     * KYC configuration for lenders.
+     * KYB configuration for lenders.
      */
-    protected static function getKycConfig(): array
+    protected static function getLenderKybConfig(): array
     {
         return [
             'profile_class' => LenderProfile::class,
             'profile_relation' => 'lenderProfile',
-            'status_enum' => KycStatusEnum::class,
-            'status_field' => 'kyc_status',
-            'submitted_at_field' => 'kyc_submitted_at',
-            'storage_path' => 'documents/kyc',
-            'archive_type' => 'kyc',
+            'status_enum' => KybStatusEnum::class,
+            'status_field' => 'kyb_status',
+            'submitted_at_field' => 'kyb_submitted_at',
+            'storage_path' => 'documents/lender_kyb',
+            'archive_type' => 'lender_kyb',
             'allowed_document_types' => [
-                DocumentTypeEnum::KYC_ID,
-                DocumentTypeEnum::KYC_ADDRESS_PROOF,
-                DocumentTypeEnum::KYC_ACCREDITATION,
+                DocumentTypeEnum::KYB_LENDER_CERTIFICATE_OF_INCORPORATION,
+                DocumentTypeEnum::KYB_LENDER_BUSINESS_LICENSE,
+                DocumentTypeEnum::KYB_LENDER_BENEFICIAL_OWNERSHIP,
+                DocumentTypeEnum::KYB_LENDER_TAX_CERTIFICATE,
+                DocumentTypeEnum::KYB_LENDER_ADDRESS_PROOF,
             ],
             'required_document_types' => [
-                DocumentTypeEnum::KYC_ID,
-                DocumentTypeEnum::KYC_ADDRESS_PROOF,
-                DocumentTypeEnum::KYC_ACCREDITATION,
+                DocumentTypeEnum::KYB_LENDER_CERTIFICATE_OF_INCORPORATION,
+                DocumentTypeEnum::KYB_LENDER_BUSINESS_LICENSE,
+                DocumentTypeEnum::KYB_LENDER_BENEFICIAL_OWNERSHIP,
+                DocumentTypeEnum::KYB_LENDER_TAX_CERTIFICATE,
+                DocumentTypeEnum::KYB_LENDER_ADDRESS_PROOF,
             ],
-            'status_not_started' => KycStatusEnum::NOT_STARTED,
-            'status_pending' => KycStatusEnum::PENDING,
-            'status_under_review' => KycStatusEnum::UNDER_REVIEW,
-            'status_approved' => KycStatusEnum::APPROVED,
-            'status_rejected' => KycStatusEnum::REJECTED,
-            'label' => 'KYC',
-            'label_full' => 'Know Your Customer',
+            'status_not_started' => KybStatusEnum::NOT_STARTED,
+            'status_pending' => KybStatusEnum::PENDING,
+            'status_under_review' => KybStatusEnum::UNDER_REVIEW,
+            'status_approved' => KybStatusEnum::APPROVED,
+            'status_rejected' => KybStatusEnum::REJECTED,
+            'label' => 'KYB',
+            'label_full' => 'Know Your Business',
         ];
     }
 

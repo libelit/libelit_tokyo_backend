@@ -3,7 +3,6 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\KybStatusEnum;
-use App\Enums\KycStatusEnum;
 use App\Enums\ProjectStatusEnum;
 use App\Models\LenderProfile;
 use App\Models\Project;
@@ -30,7 +29,7 @@ class StatsOverview extends BaseWidget
                 ->color('info'),
 
             Stat::make('Lenders', LenderProfile::count())
-                ->description(LenderProfile::where('kyc_status', KycStatusEnum::PENDING)->count() . ' pending KYC')
+                ->description(LenderProfile::where('kyb_status', KybStatusEnum::PENDING)->count() . ' pending KYB')
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('success'),
 

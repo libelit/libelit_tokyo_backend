@@ -70,7 +70,7 @@ Route::middleware(['api'])
                 Route::delete('kyb/documents/{id}', [LenderKybController::class, 'destroy']);
                 Route::post('kyb/submit', [LenderKybController::class, 'submit']);
 
-                // Projects (requires KYC approval)
+                // Projects (requires KYB approval)
                 Route::get('projects', [LenderProjectController::class, 'index']);
                 Route::get('projects/{id}', [LenderProjectController::class, 'show']);
             });

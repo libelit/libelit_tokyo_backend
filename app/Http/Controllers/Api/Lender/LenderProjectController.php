@@ -12,7 +12,7 @@ class LenderProjectController extends Controller
 {
     /**
      * List projects available for the lender.
-     * Requires KYC approval.
+     * Requires KYB approval.
      */
     public function index(Request $request): JsonResponse
     {
@@ -28,7 +28,7 @@ class LenderProjectController extends Controller
 
     /**
      * Get a single project.
-     * Requires KYC approval.
+     * Requires KYB approval.
      */
     public function show(Request $request, int $id): JsonResponse
     {

@@ -3,7 +3,6 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\KybStatusEnum;
-use App\Enums\KycStatusEnum;
 use App\Enums\ProjectStatusEnum;
 use App\Models\LenderProfile;
 use App\Models\Project;
@@ -24,10 +23,10 @@ class ApprovalRatesWidget extends BaseWidget
         $approvedKyb = DeveloperProfile::where('kyb_status', KybStatusEnum::APPROVED)->count();
         $kybRate = $totalKyb > 0 ? round(($approvedKyb / $totalKyb) * 100, 1) : 0;
 
-        // KYC Stats
-        $totalKyc = LenderProfile::count();
-        $approvedKyc = LenderProfile::where('kyc_status', KycStatusEnum::APPROVED)->count();
-        $kycRate = $totalKyc > 0 ? round(($approvedKyc / $totalKyc) * 100, 1) : 0;
+        // Lender KYB Stats
+        $totalLenderKyb = LenderProfile::count();
+        $approvedLenderKyb = LenderProfile::where('kyb_status', KybStatusEnum::APPROVED)->count();
+        $lenderKybRate = $totalLenderKyb > 0 ? round(($approvedLenderKyb / $totalLenderKyb) * 100, 1) : 0;
 
         // Project Stats
         $totalProjects = Project::whereNotIn('status', [ProjectStatusEnum::DRAFT])->count();
@@ -48,11 +47,11 @@ class ApprovalRatesWidget extends BaseWidget
                 ->color($kybRate >= 70 ? 'success' : ($kybRate >= 40 ? 'warning' : 'danger'))
                 ->chart([7, 3, 4, 5, 6, $kybRate]),
 
-            Stat::make('KYC Approval Rate', $kycRate . '%')
-                ->description($approvedKyc . ' of ' . $totalKyc . ' approved')
+            Stat::make('Lender KYB Approval Rate', $lenderKybRate . '%')
+                ->description($approvedLenderKyb . ' of ' . $totalLenderKyb . ' approved')
                 ->descriptionIcon('heroicon-m-identification')
-                ->color($kycRate >= 70 ? 'success' : ($kycRate >= 40 ? 'warning' : 'danger'))
-                ->chart([5, 4, 6, 5, 7, $kycRate]),
+                ->color($lenderKybRate >= 70 ? 'success' : ($lenderKybRate >= 40 ? 'warning' : 'danger'))
+                ->chart([5, 4, 6, 5, 7, $lenderKybRate]),
 
             Stat::make('Project Approval Rate', $projectRate . '%')
                 ->description($approvedProjects . ' of ' . $totalProjects . ' approved')

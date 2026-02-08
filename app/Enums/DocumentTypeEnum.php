@@ -12,10 +12,12 @@ enum DocumentTypeEnum: string implements HasLabel
     case KYB_ADDRESS_PROOF = 'kyb_address_proof';
     case KYB_FINANCIAL_STATEMENT = 'kyb_financial_statement';
 
-    // KYC Documents
-    case KYC_ID = 'kyc_id';
-    case KYC_ADDRESS_PROOF = 'kyc_address_proof';
-    case KYC_ACCREDITATION = 'kyc_accreditation';
+    // Lender KYB Documents
+    case KYB_LENDER_CERTIFICATE_OF_INCORPORATION = 'kyb_lender_certificate_of_incorporation';
+    case KYB_LENDER_BUSINESS_LICENSE = 'kyb_lender_business_license';
+    case KYB_LENDER_BENEFICIAL_OWNERSHIP = 'kyb_lender_beneficial_ownership';
+    case KYB_LENDER_TAX_CERTIFICATE = 'kyb_lender_tax_certificate';
+    case KYB_LENDER_ADDRESS_PROOF = 'kyb_lender_address_proof';
 
     // Project Documents (Legacy - for reference)
     case PROJECT_PROSPECTUS = 'project_prospectus';
@@ -51,9 +53,11 @@ enum DocumentTypeEnum: string implements HasLabel
             self::KYB_ID => 'KYB ID',
             self::KYB_ADDRESS_PROOF => 'KYB Address Proof',
             self::KYB_FINANCIAL_STATEMENT => 'KYB Financial Statement',
-            self::KYC_ID => 'KYC ID',
-            self::KYC_ADDRESS_PROOF => 'KYC Address Proof',
-            self::KYC_ACCREDITATION => 'KYC Accreditation',
+            self::KYB_LENDER_CERTIFICATE_OF_INCORPORATION => 'Certificate of Incorporation',
+            self::KYB_LENDER_BUSINESS_LICENSE => 'Business/Financial Services License',
+            self::KYB_LENDER_BENEFICIAL_OWNERSHIP => 'Beneficial Ownership Declaration',
+            self::KYB_LENDER_TAX_CERTIFICATE => 'Tax Identification Certificate',
+            self::KYB_LENDER_ADDRESS_PROOF => 'Proof of Business Address',
             self::PROJECT_PROSPECTUS => 'Project Prospectus',
             self::PROJECT_LEGAL => 'Project Legal',
             self::PROJECT_VALUATION => 'Project Valuation',

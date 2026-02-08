@@ -26,7 +26,7 @@ class DocumentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'documents';
 
-    protected static ?string $title = 'KYC Documents';
+    protected static ?string $title = 'KYB Documents';
 
     public function form(Schema $schema): Schema
     {
@@ -34,9 +34,11 @@ class DocumentsRelationManager extends RelationManager
             ->components([
                 Select::make('document_type')
                     ->options([
-                        DocumentTypeEnum::KYC_ID->value => 'ID Document',
-                        DocumentTypeEnum::KYC_ADDRESS_PROOF->value => 'Address Proof',
-                        DocumentTypeEnum::KYC_ACCREDITATION->value => 'Accreditation Proof',
+                        DocumentTypeEnum::KYB_LENDER_CERTIFICATE_OF_INCORPORATION->value => 'Certificate of Incorporation',
+                        DocumentTypeEnum::KYB_LENDER_BUSINESS_LICENSE->value => 'Business/Financial Services License',
+                        DocumentTypeEnum::KYB_LENDER_BENEFICIAL_OWNERSHIP->value => 'Beneficial Ownership Declaration',
+                        DocumentTypeEnum::KYB_LENDER_TAX_CERTIFICATE->value => 'Tax Identification Certificate',
+                        DocumentTypeEnum::KYB_LENDER_ADDRESS_PROOF->value => 'Proof of Business Address',
                     ])
                     ->required(),
                 TextInput::make('title')
@@ -44,7 +46,7 @@ class DocumentsRelationManager extends RelationManager
                     ->maxLength(255),
                 FileUpload::make('file_path')
                     ->label('Document')
-                    ->directory('documents/kyc')
+                    ->directory('documents/lender_kyb')
                     ->required()
                     ->acceptedFileTypes(['application/pdf', 'image/*'])
                     ->maxSize(10240),

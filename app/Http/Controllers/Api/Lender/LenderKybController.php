@@ -15,10 +15,10 @@ use Illuminate\Http\Request;
 
 class LenderKybController extends Controller
 {
-    protected string $verificationType = VerificationConfig::TYPE_KYC;
+    protected string $verificationType = VerificationConfig::TYPE_LENDER_KYB;
 
     /**
-     * List all KYC documents for the lender.
+     * List all KYB documents for the lender.
      */
     public function index(Request $request): JsonResponse
     {
@@ -31,7 +31,7 @@ class LenderKybController extends Controller
     }
 
     /**
-     * Get a single KYC document.
+     * Get a single KYB document.
      */
     public function show(Request $request, int $id): JsonResponse
     {
@@ -45,7 +45,7 @@ class LenderKybController extends Controller
     }
 
     /**
-     * Upload KYC documents.
+     * Upload KYB documents.
      */
     public function store(StoreKybDocumentRequest $request): JsonResponse
     {
@@ -59,7 +59,7 @@ class LenderKybController extends Controller
     }
 
     /**
-     * Delete a KYC document.
+     * Delete a KYB document.
      */
     public function destroy(Request $request, int $id): JsonResponse
     {
@@ -73,7 +73,7 @@ class LenderKybController extends Controller
     }
 
     /**
-     * Submit KYC for review.
+     * Submit KYB for review.
      */
     public function submit(Request $request): JsonResponse
     {

@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Lender;
 
-use App\Enums\KycStatusEnum;
+use App\Enums\KybStatusEnum;
 use App\Enums\ProjectStatusEnum;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
@@ -30,12 +30,12 @@ class ListLenderProjectsJob
         try {
             $lenderProfile = $this->user->lenderProfile;
 
-            // Check KYC status
-            if ($lenderProfile->kyc_status !== KycStatusEnum::APPROVED) {
+            // Check KYB status
+            if ($lenderProfile->kyb_status !== KybStatusEnum::APPROVED) {
                 return response()->json([
                     'success' => false,
                     'message' => 'You must complete KYB verification before viewing projects.',
-                    'kyb_status' => $lenderProfile->kyc_status,
+                    'kyb_status' => $lenderProfile->kyb_status,
                 ], 403);
             }
 

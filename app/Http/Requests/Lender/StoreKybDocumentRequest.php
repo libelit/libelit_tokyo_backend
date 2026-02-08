@@ -22,11 +22,11 @@ class StoreKybDocumentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'documents' => ['required', 'array', 'min:1', 'max:3'],
+            'documents' => ['required', 'array', 'min:1', 'max:5'],
             'documents.*.document_type' => [
                 'required',
                 'string',
-                'in:kyc_id,kyc_address_proof,kyc_accreditation',
+                'in:kyb_lender_certificate_of_incorporation,kyb_lender_business_license,kyb_lender_beneficial_ownership,kyb_lender_tax_certificate,kyb_lender_address_proof',
             ],
             'documents.*.title' => ['required', 'string', 'max:255'],
             'documents.*.file' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:10240'], // 10MB
@@ -40,7 +40,7 @@ class StoreKybDocumentRequest extends FormRequest
     {
         return [
             'documents.required' => 'At least one document is required.',
-            'documents.*.document_type.in' => 'Invalid document type. Allowed types: kyc_id, kyc_address_proof, kyc_accreditation.',
+            'documents.*.document_type.in' => 'Invalid document type. Allowed types: kyb_lender_certificate_of_incorporation, kyb_lender_business_license, kyb_lender_beneficial_ownership, kyb_lender_tax_certificate, kyb_lender_address_proof.',
             'documents.*.file.max' => 'Each file must not be larger than 10MB.',
             'documents.*.file.mimes' => 'Each file must be a PDF, JPG, or PNG.',
         ];

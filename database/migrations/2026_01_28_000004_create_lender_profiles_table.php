@@ -14,11 +14,11 @@ return new class extends Migration
             $table->string('lender_type')->nullable();
             $table->string('company_name')->nullable();
             $table->text('address')->nullable();
-            $table->string('kyc_status')->default('pending')->nullable();
-            $table->timestamp('kyc_submitted_at')->nullable();
-            $table->timestamp('kyc_approved_at')->nullable();
-            $table->foreignId('kyc_approved_by')->nullable()->constrained('users');
-            $table->text('kyc_rejection_reason')->nullable();
+            $table->string('kyb_status')->default('pending')->nullable();
+            $table->timestamp('kyb_submitted_at')->nullable();
+            $table->timestamp('kyb_approved_at')->nullable();
+            $table->foreignId('kyb_approved_by')->nullable()->constrained('users');
+            $table->text('kyb_rejection_reason')->nullable();
             $table->string('aml_status')->default('pending')->nullable();
             $table->timestamp('aml_checked_at')->nullable();
             $table->string('accreditation_status')->default('pending')->nullable();
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->index('user_id');
-            $table->index('kyc_status');
+            $table->index('kyb_status');
             $table->index('aml_status');
         });
     }
