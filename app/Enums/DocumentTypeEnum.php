@@ -42,6 +42,9 @@ enum DocumentTypeEnum: string implements HasLabel
     case CONTRACT_SIGNED = 'contract_signed';
     case CONTRACT_AMENDMENT = 'contract_amendment';
 
+    // Loan Proposal Documents
+    case LOAN_TERM_AGREEMENT = 'loan_term_agreement';
+
     // Monitoring Documents
     case MONITORING_REPORT = 'monitoring_report';
     case MONITORING_PHOTO = 'monitoring_photo';
@@ -75,6 +78,7 @@ enum DocumentTypeEnum: string implements HasLabel
             self::CONTRACT_AMENDMENT => 'Contract Amendment',
             self::MONITORING_REPORT => 'Monitoring Report',
             self::MONITORING_PHOTO => 'Monitoring Photo',
+            self::LOAN_TERM_AGREEMENT => 'Loan Term Agreement',
         };
     }
 }

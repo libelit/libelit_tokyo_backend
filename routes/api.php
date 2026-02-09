@@ -3,11 +3,13 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Developer\DeveloperProfileController;
 use App\Http\Controllers\Api\Developer\DeveloperKybController;
+use App\Http\Controllers\Api\Developer\DeveloperLoanProposalController;
 use App\Http\Controllers\Api\Developer\DeveloperProjectController;
 use App\Http\Controllers\Api\Developer\ProjectDocumentController;
 use App\Http\Controllers\Api\Developer\ProjectMilestoneController;
 use App\Http\Controllers\Api\Developer\ProjectPhotoController;
 use App\Http\Controllers\Api\Lender\LenderKybController;
+use App\Http\Controllers\Api\Lender\LenderLoanProposalController;
 use App\Http\Controllers\Api\Lender\LenderProfileController;
 use App\Http\Controllers\Api\Lender\LenderProjectController;
 use Illuminate\Http\Request;
@@ -66,6 +68,14 @@ Route::middleware(['api'])
                 // Milestone Proofs
                 Route::get('projects/{projectId}/milestones/{milestoneId}/proofs', [ProjectMilestoneController::class, 'listProofs']);
                 Route::delete('projects/{projectId}/milestones/{milestoneId}/proofs/{proofId}', [ProjectMilestoneController::class, 'deleteProof']);
+
+                // Loan Proposals
+                Route::get('projects/{projectId}/loan-proposals', [DeveloperLoanProposalController::class, 'index']);
+                Route::get('loan-proposals/{id}', [DeveloperLoanProposalController::class, 'show']);
+                Route::patch('loan-proposals/{id}/start-review', [DeveloperLoanProposalController::class, 'startReview']);
+                Route::post('loan-proposals/{id}/accept', [DeveloperLoanProposalController::class, 'accept']);
+                Route::post('loan-proposals/{id}/reject', [DeveloperLoanProposalController::class, 'reject']);
+                Route::post('loan-proposals/{id}/sign', [DeveloperLoanProposalController::class, 'sign']);
             });
 
             // Lender Routes
@@ -83,6 +93,12 @@ Route::middleware(['api'])
                 // Projects (requires KYB approval)
                 Route::get('projects', [LenderProjectController::class, 'index']);
                 Route::get('projects/{id}', [LenderProjectController::class, 'show']);
+
+                // Loan Proposals
+                Route::get('loan-proposals', [LenderLoanProposalController::class, 'index']);
+                Route::post('loan-proposals', [LenderLoanProposalController::class, 'store']);
+                Route::get('loan-proposals/{id}', [LenderLoanProposalController::class, 'show']);
+                Route::post('loan-proposals/{id}/sign', [LenderLoanProposalController::class, 'sign']);
             });
         });
 });

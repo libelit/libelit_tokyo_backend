@@ -131,6 +131,11 @@ class Project extends Model
         return $this->hasOne(ProjectPhoto::class)->where('is_featured', true);
     }
 
+    public function loanProposals(): HasMany
+    {
+        return $this->hasMany(LoanProposal::class);
+    }
+
     /**
      * Get the latest successful project archive.
      */
