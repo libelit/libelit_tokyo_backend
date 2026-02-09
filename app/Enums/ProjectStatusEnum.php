@@ -10,6 +10,7 @@ enum ProjectStatusEnum: string implements HasLabel
     case SUBMITTED = 'submitted';
     case UNDER_REVIEW = 'under_review';
     case APPROVED = 'approved';
+    case PROPOSAL_ACCEPTED = 'proposal_accepted';
     case REJECTED = 'rejected';
     case FUNDING = 'funding';
     case FUNDED = 'funded';
@@ -22,8 +23,9 @@ enum ProjectStatusEnum: string implements HasLabel
             self::SUBMITTED => 'Submitted',
             self::UNDER_REVIEW => 'Under Review',
             self::APPROVED => 'Approved',
+            self::PROPOSAL_ACCEPTED => 'Proposal Accepted',
             self::REJECTED => 'Rejected',
-            self::FUNDING => 'funding',
+            self::FUNDING => 'Funding',
             self::FUNDED => 'Funded',
             self::COMPLETED => 'Completed',
         };

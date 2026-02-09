@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Api\Developer;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Developer\RejectLoanProposalRequest;
-use App\Jobs\Developer\AcceptLoanProposalJob;
+use App\Http\Requests\Developer\UpdateLoanProposalRequest;
 use App\Jobs\Developer\GetDeveloperLoanProposalJob;
 use App\Jobs\Developer\ListProjectLoanProposalsJob;
-use App\Jobs\Developer\RejectLoanProposalJob;
-use App\Jobs\Developer\SignLoanProposalJob;
-use App\Jobs\Developer\StartReviewLoanProposalJob;
+use App\Jobs\Developer\UpdateLoanProposalJob;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -44,53 +41,15 @@ class DeveloperLoanProposalController extends Controller
     }
 
     /**
-     * Mark a loan proposal as under review.
+     * Update loan proposal (start_review, accept, reject, sign).
      */
-    public function startReview(Request $request, int $id): JsonResponse
+    public function update(UpdateLoanProposalRequest $request, int $id): JsonResponse
     {
-        $job = new StartReviewLoanProposalJob(
-            user: $request->user(),
-            loanProposalId: $id
-        );
-
-        return $job->handle();
-    }
-
-    /**
-     * Accept a loan proposal.
-     */
-    public function accept(Request $request, int $id): JsonResponse
-    {
-        $job = new AcceptLoanProposalJob(
-            user: $request->user(),
-            loanProposalId: $id
-        );
-
-        return $job->handle();
-    }
-
-    /**
-     * Reject a loan proposal.
-     */
-    public function reject(RejectLoanProposalRequest $request, int $id): JsonResponse
-    {
-        $job = new RejectLoanProposalJob(
+        $job = new UpdateLoanProposalJob(
             user: $request->user(),
             loanProposalId: $id,
+            action: $request->validated('action'),
             rejectionReason: $request->validated('rejection_reason')
-        );
-
-        return $job->handle();
-    }
-
-    /**
-     * Sign the loan term agreement.
-     */
-    public function sign(Request $request, int $id): JsonResponse
-    {
-        $job = new SignLoanProposalJob(
-            user: $request->user(),
-            loanProposalId: $id
         );
 
         return $job->handle();

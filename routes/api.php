@@ -72,10 +72,7 @@ Route::middleware(['api'])
                 // Loan Proposals
                 Route::get('projects/{projectId}/loan-proposals', [DeveloperLoanProposalController::class, 'index']);
                 Route::get('loan-proposals/{id}', [DeveloperLoanProposalController::class, 'show']);
-                Route::patch('loan-proposals/{id}/start-review', [DeveloperLoanProposalController::class, 'startReview']);
-                Route::post('loan-proposals/{id}/accept', [DeveloperLoanProposalController::class, 'accept']);
-                Route::post('loan-proposals/{id}/reject', [DeveloperLoanProposalController::class, 'reject']);
-                Route::post('loan-proposals/{id}/sign', [DeveloperLoanProposalController::class, 'sign']);
+                Route::patch('loan-proposals/{id}', [DeveloperLoanProposalController::class, 'update']);
             });
 
             // Lender Routes
@@ -98,7 +95,7 @@ Route::middleware(['api'])
                 Route::get('loan-proposals', [LenderLoanProposalController::class, 'index']);
                 Route::post('loan-proposals', [LenderLoanProposalController::class, 'store']);
                 Route::get('loan-proposals/{id}', [LenderLoanProposalController::class, 'show']);
-                Route::post('loan-proposals/{id}/sign', [LenderLoanProposalController::class, 'sign']);
+                Route::patch('loan-proposals/{id}', [LenderLoanProposalController::class, 'update']);
             });
         });
 });

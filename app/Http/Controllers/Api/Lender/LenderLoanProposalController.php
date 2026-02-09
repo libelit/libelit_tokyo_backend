@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api\Lender;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Lender\StoreLoanProposalRequest;
+use App\Http\Requests\Lender\UpdateLoanProposalRequest;
 use App\Jobs\Lender\CreateLoanProposalJob;
 use App\Jobs\Lender\GetLenderLoanProposalJob;
 use App\Jobs\Lender\ListLenderLoanProposalsJob;
-use App\Jobs\Lender\SignLoanProposalJob;
+use App\Jobs\Lender\UpdateLoanProposalJob;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -54,14 +55,14 @@ class LenderLoanProposalController extends Controller
     }
 
     /**
-     * Sign the loan term agreement.
+     * Update loan proposal (sign).
      */
-    public function sign(Request $request, int $id): JsonResponse
+    public function update(UpdateLoanProposalRequest $request, int $id): JsonResponse
     {
-        $job = new SignLoanProposalJob(
+        $job = new UpdateLoanProposalJob(
             user: $request->user(),
             loanProposalId: $id,
-            signerType: 'lender'
+            action: $request->validated('action')
         );
 
         return $job->handle();
