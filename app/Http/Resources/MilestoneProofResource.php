@@ -27,6 +27,8 @@ class MilestoneProofResource extends JsonResource
             'mime_type' => $this->mime_type,
             'file_url' => $this->file_url,
             'uploaded_by' => $this->uploaded_by,
+            'is_payment_proof' => $this->is_payment_proof ?? false,
+            'payment_uploaded_by' => $this->payment_uploaded_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -33,6 +33,7 @@ class ListProjectMilestonesJob
             }
 
             $milestones = $project->milestones()
+                ->with('proofs')
                 ->withCount('proofs')
                 ->orderBy('sequence')
                 ->get();

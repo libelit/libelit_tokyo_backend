@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Developer\ProjectMilestoneController;
 use App\Http\Controllers\Api\Developer\ProjectPhotoController;
 use App\Http\Controllers\Api\Lender\LenderKybController;
 use App\Http\Controllers\Api\Lender\LenderLoanProposalController;
+use App\Http\Controllers\Api\Lender\LenderMilestoneController;
 use App\Http\Controllers\Api\Lender\LenderProfileController;
 use App\Http\Controllers\Api\Lender\LenderProjectController;
 use Illuminate\Http\Request;
@@ -96,6 +97,13 @@ Route::middleware(['api'])
                 Route::post('loan-proposals', [LenderLoanProposalController::class, 'store']);
                 Route::get('loan-proposals/{id}', [LenderLoanProposalController::class, 'show']);
                 Route::patch('loan-proposals/{id}', [LenderLoanProposalController::class, 'update']);
+
+                // Milestone Management
+                Route::get('projects/{projectId}/milestones', [LenderMilestoneController::class, 'index']);
+                Route::get('projects/{projectId}/milestones/{milestoneId}', [LenderMilestoneController::class, 'show']);
+                Route::post('projects/{projectId}/milestones/{milestoneId}/approve', [LenderMilestoneController::class, 'approve']);
+                Route::post('projects/{projectId}/milestones/{milestoneId}/reject', [LenderMilestoneController::class, 'reject']);
+                Route::post('projects/{projectId}/milestones/{milestoneId}/payment-proof', [LenderMilestoneController::class, 'uploadPaymentProof']);
             });
         });
 });

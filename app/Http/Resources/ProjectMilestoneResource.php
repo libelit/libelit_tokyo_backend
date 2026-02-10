@@ -34,6 +34,16 @@ class ProjectMilestoneResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'proofs' => MilestoneProofResource::collection($this->whenLoaded('proofs')),
+            'milestone_proofs' => $this->whenLoaded('proofs', function () {
+                return MilestoneProofResource::collection(
+                    $this->proofs->where('is_payment_proof', false)
+                );
+            }),
+            'payment_proofs' => $this->whenLoaded('proofs', function () {
+                return MilestoneProofResource::collection(
+                    $this->proofs->where('is_payment_proof', true)
+                );
+            }),
             'proofs_count' => $this->whenCounted('proofs'),
             'can_complete' => $this->canComplete(),
         ];
