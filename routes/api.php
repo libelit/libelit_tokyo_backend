@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\WalletController;
 use App\Http\Controllers\Api\Developer\DeveloperProfileController;
 use App\Http\Controllers\Api\Developer\DeveloperKybController;
 use App\Http\Controllers\Api\Developer\DeveloperLoanProposalController;
@@ -27,6 +28,11 @@ Route::middleware(['api'])
             Route::get('/user', function (Request $request) {
                 return $request->user();
             });
+
+            // Wallet Routes (accessible by all authenticated users)
+            Route::get('/wallet', [WalletController::class, 'show']);
+            Route::post('/wallet', [WalletController::class, 'store']);
+            Route::delete('/wallet', [WalletController::class, 'destroy']);
 
             // Developer Routes
             Route::prefix('developer')->middleware(['developer'])->group(function () {
