@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Enums\UserStatusEnum;
 use App\Enums\UserTypeEnum;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +15,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable implements OAuthenticatable
+class User extends Authenticatable implements OAuthenticatable, FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -57,6 +59,11 @@ class User extends Authenticatable implements OAuthenticatable
             'type' => UserTypeEnum::class,
             'status' => UserStatusEnum::class,
         ];
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
     }
 
     public function developerProfile(): HasOne
