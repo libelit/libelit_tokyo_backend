@@ -30,12 +30,15 @@ class MilestoneProof extends Model
         's3_status',
         'uploaded_to_s3_at',
         'uploaded_by',
+        'is_payment_proof',
+        'payment_uploaded_by',
     ];
 
     protected $casts = [
         'proof_type' => MilestoneProofTypeEnum::class,
         's3_status' => DocumentS3StatusEnum::class,
         'uploaded_to_s3_at' => 'datetime',
+        'is_payment_proof' => 'boolean',
     ];
 
     protected $appends = ['file_url'];
@@ -54,6 +57,30 @@ class MilestoneProof extends Model
     public function uploader(): BelongsTo
     {
         return $this->belongsTo(User::class, 'uploaded_by');
+    }
+
+    /**
+     * Get the lender user who uploaded the payment proof.
+     */
+    public function paymentUploader(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'payment_uploaded_by');
+    }
+
+    /**
+     * Scope to get only payment proofs.
+     */
+    public function scopePaymentProofs($query)
+    {
+        return $query->where('is_payment_proof', true);
+    }
+
+    /**
+     * Scope to get only milestone proofs (non-payment).
+     */
+    public function scopeMilestoneProofs($query)
+    {
+        return $query->where('is_payment_proof', false);
     }
 
     /**
