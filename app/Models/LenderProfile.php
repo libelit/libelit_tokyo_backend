@@ -6,6 +6,7 @@ use App\Enums\AccreditationStatusEnum;
 use App\Enums\AmlStatusEnum;
 use App\Enums\LenderTypeEnum;
 use App\Enums\KybStatusEnum;
+use App\Traits\HasWallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LenderProfile extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasWallet;
 
     protected $table = 'lender_profiles';
 
