@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\Lenders\Pages;
 
+use App\Enums\BlockchainAuditEventTypeEnum;
 use App\Enums\KybStatusEnum;
 use App\Filament\Resources\Lenders\LenderResource;
+use App\Managers\AuditTrailManager;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Textarea;
@@ -53,6 +55,12 @@ class ViewLender extends ViewRecord
                         'is_active' => true,
                     ]);
 
+                    AuditTrailManager::record(
+                        BlockchainAuditEventTypeEnum::LENDER_KYB_APPROVED,
+                        $this->record,
+                        ['approved_by' => auth()->id()]
+                    );
+
                     Notification::make()
                         ->title('KYB Approved')
                         ->success()
@@ -78,6 +86,12 @@ class ViewLender extends ViewRecord
                         'kyb_rejection_reason' => $data['rejection_reason'],
                         'is_active' => false,
                     ]);
+
+                    AuditTrailManager::record(
+                        BlockchainAuditEventTypeEnum::LENDER_KYB_REJECTED,
+                        $this->record,
+                        ['rejection_reason' => $data['rejection_reason']]
+                    );
 
                     Notification::make()
                         ->title('KYB Rejected')

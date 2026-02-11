@@ -2,9 +2,11 @@
 
 namespace App\Jobs\Developer;
 
+use App\Enums\BlockchainAuditEventTypeEnum;
 use App\Enums\DocumentS3StatusEnum;
 use App\Enums\MilestoneStatusEnum;
 use App\Http\Resources\ProjectMilestoneResource;
+use App\Managers\AuditTrailManager;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -97,6 +99,12 @@ class CompleteMilestoneJob
 
             $milestone->refresh();
             $milestone->loadCount('proofs');
+
+            // Record blockchain audit trail for milestone proof submission
+            AuditTrailManager::record(
+                BlockchainAuditEventTypeEnum::MILESTONE_PAYMENT_REQUESTED,
+                $milestone
+            );
 
             return response()->json([
                 'success' => true,

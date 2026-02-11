@@ -2,9 +2,11 @@
 
 namespace App\Jobs\Developer;
 
+use App\Enums\BlockchainAuditEventTypeEnum;
 use App\Enums\DocumentTypeEnum;
 use App\Enums\ProjectStatusEnum;
 use App\Http\Resources\ProjectResource;
+use App\Managers\AuditTrailManager;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -104,6 +106,12 @@ class SubmitProjectJob
                 'status' => ProjectStatusEnum::SUBMITTED,
                 'submitted_at' => now(),
             ]);
+
+            // Record blockchain audit trail
+            AuditTrailManager::record(
+                BlockchainAuditEventTypeEnum::PROJECT_SUBMITTED,
+                $project
+            );
 
             return response()->json([
                 'success' => true,

@@ -3,8 +3,10 @@
 namespace App\Jobs\Verification;
 
 use App\Config\VerificationConfig;
+use App\Enums\BlockchainAuditEventTypeEnum;
 use App\Enums\DocumentTypeEnum;
 use App\Jobs\Documents\CreateDocumentArchiveJob;
+use App\Managers\AuditTrailManager;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -81,6 +83,12 @@ class SubmitVerificationJob
                 $statusField => $statusPending,
                 $submittedAtField => now(),
             ]);
+
+            // Record blockchain audit trail
+            $auditEventType = $this->verificationType === 'developer_kyb'
+                ? BlockchainAuditEventTypeEnum::DEVELOPER_KYB_SUBMITTED
+                : BlockchainAuditEventTypeEnum::LENDER_KYB_SUBMITTED;
+            AuditTrailManager::record($auditEventType, $profile);
 
             // Dispatch job to create zip archive of documents
             CreateDocumentArchiveJob::dispatch($profile, $archiveType)

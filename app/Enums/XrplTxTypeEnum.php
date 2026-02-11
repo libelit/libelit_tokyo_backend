@@ -7,6 +7,7 @@ use Filament\Support\Contracts\HasLabel;
 enum XrplTxTypeEnum: string implements HasLabel
 {
     case PAYMENT = 'Payment';
+    case ACCOUNT_SET = 'AccountSet';
     case ESCROW_CREATE = 'EscrowCreate';
     case ESCROW_FINISH = 'EscrowFinish';
     case ESCROW_CANCEL = 'EscrowCancel';
@@ -22,6 +23,7 @@ enum XrplTxTypeEnum: string implements HasLabel
     {
         return match ($this) {
             self::PAYMENT => 'Payment',
+            self::ACCOUNT_SET => 'Account Set',
             self::ESCROW_CREATE => 'Escrow Create',
             self::ESCROW_FINISH => 'Escrow Finish',
             self::ESCROW_CANCEL => 'Escrow Cancel',

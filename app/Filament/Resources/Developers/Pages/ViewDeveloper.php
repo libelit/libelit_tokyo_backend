@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources\Developers\Pages;
 
+use App\Enums\BlockchainAuditEventTypeEnum;
 use App\Enums\KybStatusEnum;
 use App\Filament\Resources\Developers\DeveloperResource;
+use App\Managers\AuditTrailManager;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
-use Filament\Resources\Pages\ViewRecord;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ViewRecord;
 
 class ViewDeveloper extends ViewRecord
 {
@@ -51,6 +53,12 @@ class ViewDeveloper extends ViewRecord
                         'kyb_rejection_reason' => null,
                     ]);
 
+                    AuditTrailManager::record(
+                        BlockchainAuditEventTypeEnum::DEVELOPER_KYB_APPROVED,
+                        $this->record,
+                        ['approved_by' => auth()->id()]
+                    );
+
                     Notification::make()
                         ->title('KYB Approved')
                         ->success()
@@ -75,6 +83,12 @@ class ViewDeveloper extends ViewRecord
                         'kyb_status' => KybStatusEnum::REJECTED,
                         'kyb_rejection_reason' => $data['rejection_reason'],
                     ]);
+
+                    AuditTrailManager::record(
+                        BlockchainAuditEventTypeEnum::DEVELOPER_KYB_REJECTED,
+                        $this->record,
+                        ['rejection_reason' => $data['rejection_reason']]
+                    );
 
                     Notification::make()
                         ->title('KYB Rejected')
