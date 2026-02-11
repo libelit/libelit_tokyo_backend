@@ -42,15 +42,15 @@ class ListLenderProjectsJob
             $lenderId = $lenderProfile->id;
 
             // Build query
-            // - SUBMITTED: visible to all lenders (marketplace)
-            // - UNDER_REVIEW/APPROVED/FUNDING/FUNDED/COMPLETED: only visible to the lender who claimed it (exclusive)
+            // - LISTED: visible to all lenders (marketplace) - projects approved by admin and listed
+            // - Other statuses: only visible to the lender who claimed it (exclusive)
             $query = Project::query()
                 ->with(['developer.user', 'documents','lender', 'photos', 'milestones.proofs'])
                 ->withCount(['milestones', 'photos']);
 
             $query->where(function ($q) use ($lenderId) {
-                // All lenders can see SUBMITTED projects (marketplace)
-                $q->where('status', ProjectStatusEnum::SUBMITTED);
+                // All lenders can see LISTED projects (marketplace)
+                $q->where('status', ProjectStatusEnum::LISTED);
 
                 // Lender can also see projects assigned to them (exclusive visibility)
                 $q->orWhere('lender_id', $lenderId);

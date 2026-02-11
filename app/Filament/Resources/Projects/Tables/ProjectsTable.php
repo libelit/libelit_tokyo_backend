@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Projects\Tables;
 
 use App\Enums\ProjectStatusEnum;
 use App\Enums\ProjectTypeEnum;
+use App\Enums\VerificationStatusEnum;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -13,6 +15,7 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
@@ -58,6 +61,8 @@ class ProjectsTable
                         ProjectStatusEnum::SUBMITTED => 'info',
                         ProjectStatusEnum::UNDER_REVIEW => 'warning',
                         ProjectStatusEnum::APPROVED => 'success',
+                        ProjectStatusEnum::LISTED => 'primary',
+                        ProjectStatusEnum::PROPOSAL_ACCEPTED => 'info',
                         ProjectStatusEnum::REJECTED => 'danger',
                         ProjectStatusEnum::FUNDING => 'warning',
                         ProjectStatusEnum::FUNDED => 'primary',
@@ -88,6 +93,45 @@ class ProjectsTable
                 TrashedFilter::make(),
             ])
             ->actions([
+                Action::make('listOnMarketplace')
+                    ->label('List on Marketplace')
+                    ->icon('heroicon-o-shopping-bag')
+                    ->color('primary')
+                    ->visible(fn ($record) => $record->status === ProjectStatusEnum::APPROVED)
+                    ->disabled(function ($record) {
+                        // Disable if no documents or any document is not approved
+                        $documents = $record->documents;
+                        if ($documents->isEmpty()) {
+                            return true;
+                        }
+                        return $documents->contains(fn ($doc) => $doc->verification_status !== VerificationStatusEnum::APPROVED);
+                    })
+                    ->tooltip(function ($record) {
+                        $documents = $record->documents;
+                        if ($documents->isEmpty()) {
+                            return 'No documents uploaded';
+                        }
+                        $pendingCount = $documents->filter(fn ($doc) => $doc->verification_status !== VerificationStatusEnum::APPROVED)->count();
+                        if ($pendingCount > 0) {
+                            return "{$pendingCount} document(s) pending approval";
+                        }
+                        return null;
+                    })
+                    ->requiresConfirmation()
+                    ->modalHeading('List on Marketplace')
+                    ->modalDescription('Are you sure you want to list this project on the marketplace? It will become visible to all lenders.')
+                    ->action(function ($record) {
+                        $record->update([
+                            'status' => ProjectStatusEnum::LISTED,
+                            'listed_at' => now(),
+                        ]);
+
+                        Notification::make()
+                            ->title('Project Listed')
+                            ->body('The project has been listed on the marketplace.')
+                            ->success()
+                            ->send();
+                    }),
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),

@@ -38,14 +38,14 @@ class GetLenderProjectJob
             $lenderId = $lenderProfile->id;
 
             // Query project with visibility rules:
-            // - SUBMITTED: visible to all lenders (marketplace)
-            // - UNDER_REVIEW/APPROVED/FUNDING/FUNDED/COMPLETED: only visible to the lender who claimed it
+            // - LISTED: visible to all lenders (marketplace) - projects approved by admin and listed
+            // - Other statuses: only visible to the lender who claimed it
             $project = Project::with(['developer.user', 'documents','lender', 'photos', 'milestones.proofs'])
                 ->withCount(['milestones', 'photos', 'documents'])
                 ->where('id', $this->projectId)
                 ->where(function ($q) use ($lenderId) {
-                    // All lenders can see SUBMITTED projects
-                    $q->where('status', ProjectStatusEnum::SUBMITTED);
+                    // All lenders can see LISTED projects
+                    $q->where('status', ProjectStatusEnum::LISTED);
 
                     // Lender can also see projects assigned to them (exclusive visibility)
                     $q->orWhere('lender_id', $lenderId);
