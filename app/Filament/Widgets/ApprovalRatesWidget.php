@@ -3,10 +3,12 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\KybStatusEnum;
+use App\Enums\MilestoneStatusEnum;
 use App\Enums\ProjectStatusEnum;
+use App\Models\DeveloperProfile;
 use App\Models\LenderProfile;
 use App\Models\Project;
-use App\Models\DeveloperProfile;
+use App\Models\ProjectMilestone;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -37,8 +39,8 @@ class ApprovalRatesWidget extends BaseWidget
         ])->count();
         $projectRate = $totalProjects > 0 ? round(($approvedProjects / $totalProjects) * 100, 1) : 0;
 
-        // Investment totals
-        $totalInvestments = \App\Models\Investment::sum('amount');
+        // Milestone payments totals (paid milestones)
+        $totalMilestonePayments = ProjectMilestone::where('status', MilestoneStatusEnum::PAID)->sum('amount');
 
         return [
             Stat::make('KYB Approval Rate', $kybRate . '%')
@@ -59,9 +61,9 @@ class ApprovalRatesWidget extends BaseWidget
                 ->color($projectRate >= 70 ? 'success' : ($projectRate >= 40 ? 'warning' : 'danger'))
                 ->chart([4, 5, 3, 6, 5, $projectRate]),
 
-            Stat::make('Total Investments', '$' . number_format($totalInvestments, 2))
-                ->description('All time investment volume')
-                ->descriptionIcon('heroicon-m-currency-dollar')
+            Stat::make('Milestone Payments', '$' . number_format($totalMilestonePayments, 2))
+                ->description('Total milestone payments made')
+                ->descriptionIcon('heroicon-m-banknotes')
                 ->color('success'),
         ];
     }

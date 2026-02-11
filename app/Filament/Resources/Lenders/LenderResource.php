@@ -7,7 +7,6 @@ use App\Filament\Resources\Lenders\Pages\EditLender;
 use App\Filament\Resources\Lenders\Pages\ListLenders;
 use App\Filament\Resources\Lenders\Pages\ViewLender;
 use App\Filament\Resources\Lenders\RelationManagers\DocumentsRelationManager;
-use App\Filament\Resources\Lenders\RelationManagers\InvestmentsRelationManager;
 use App\Filament\Resources\Lenders\Schemas\LenderForm;
 use App\Filament\Resources\Lenders\Tables\LendersTable;
 use App\Models\LenderProfile;
@@ -49,7 +48,6 @@ class LenderResource extends Resource
     {
         return [
             DocumentsRelationManager::class,
-            InvestmentsRelationManager::class,
         ];
     }
 

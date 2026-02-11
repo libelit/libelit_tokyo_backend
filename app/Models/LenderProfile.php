@@ -59,11 +59,6 @@ class LenderProfile extends Model
         return $this->belongsTo(User::class, 'kyb_approved_by');
     }
 
-    public function investments(): HasMany
-    {
-        return $this->hasMany(Investment::class, 'lender_id');
-    }
-
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class, 'lender_id');

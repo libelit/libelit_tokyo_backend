@@ -31,6 +31,7 @@ class ProjectStatusChart extends ChartWidget
             ProjectStatusEnum::SUBMITTED => '#3B82F6',
             ProjectStatusEnum::UNDER_REVIEW => '#F59E0B',
             ProjectStatusEnum::APPROVED => '#10B981',
+            ProjectStatusEnum::LISTED => '#06B6D4',
             ProjectStatusEnum::PROPOSAL_ACCEPTED => '#22C55E',
             ProjectStatusEnum::REJECTED => '#EF4444',
             ProjectStatusEnum::FUNDING => '#FBBF24',

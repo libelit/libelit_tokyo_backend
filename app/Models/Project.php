@@ -96,11 +96,6 @@ class Project extends Model
         return $this->hasOne(Token::class);
     }
 
-    public function investments(): HasMany
-    {
-        return $this->hasMany(Investment::class);
-    }
-
     public function documents(): MorphMany
     {
         return $this->morphMany(Document::class, 'documentable');

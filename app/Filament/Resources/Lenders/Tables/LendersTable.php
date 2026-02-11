@@ -52,9 +52,9 @@ class LendersTable
                         KybStatusEnum::APPROVED => 'success',
                         KybStatusEnum::REJECTED => 'danger',
                     }),
-                TextColumn::make('investments_count')
-                    ->label('Investments')
-                    ->counts('investments')
+                TextColumn::make('loan_proposals_count')
+                    ->label('Proposals')
+                    ->counts('loanProposals')
                     ->sortable(),
                 IconColumn::make('is_active')
                     ->label('Active')
