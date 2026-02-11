@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Jobs\Developer;
+namespace App\Jobs\Lender;
 
-use App\Http\Resources\DeveloperProfileResource;
+use App\Http\Resources\LenderProfileResource;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 
-class UpdateProfileJob
+class UpdateLenderProfileJob
 {
     protected User $user;
     protected array $data;
@@ -33,15 +33,15 @@ class UpdateProfileJob
             }
 
             // Update profile data if provided
-            $developerProfile = $this->user->developerProfile;
+            $lenderProfile = $this->user->lenderProfile;
             if (!empty($profileData)) {
-                $developerProfile->update($profileData);
+                $lenderProfile->update($profileData);
             }
 
             return response()->json([
                 'success' => true,
                 'message' => 'Profile updated successfully.',
-                'data' => new DeveloperProfileResource($developerProfile->fresh()->load('user')),
+                'data' => new LenderProfileResource($lenderProfile->fresh()->load('user')),
             ]);
         } catch (Exception $exception) {
             return response()->json([

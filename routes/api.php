@@ -29,6 +29,7 @@ Route::middleware(['api'])
             Route::get('/user', function (Request $request) {
                 return $request->user();
             });
+            Route::post('/change-password', [AuthController::class, 'changePassword']);
 
             // Wallet Routes (accessible by all authenticated users)
             Route::get('/wallet', [WalletController::class, 'show']);
@@ -86,6 +87,7 @@ Route::middleware(['api'])
             Route::prefix('lender')->middleware(['lender'])->group(function () {
                 // Profile
                 Route::get('profile', [LenderProfileController::class, 'show']);
+                Route::put('profile', [LenderProfileController::class, 'update']);
 
                 // KYB
                 Route::get('kyb/documents', [LenderKybController::class, 'index']);

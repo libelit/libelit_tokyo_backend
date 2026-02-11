@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Jobs\Auth\ChangePasswordJob;
 use App\Jobs\Auth\LoginJob;
 use App\Jobs\Auth\RegisterJob;
 use Illuminate\Http\JsonResponse;
@@ -52,5 +54,17 @@ class AuthController extends Controller
                 'message' => 'Logged out successfully',
             ]);
         }
+    }
+
+    /**
+     * Change the user's password.
+     */
+    public function changePassword(ChangePasswordRequest $request): JsonResponse
+    {
+        $job = new ChangePasswordJob(
+            user: $request->user(),
+            password: $request->validated('password')
+        );
+        return $job->handle();
     }
 }
