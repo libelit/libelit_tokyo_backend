@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Enums\InvestmentStatusEnum;
+use App\Enums\MilestoneStatusEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,20 +15,10 @@ class ProjectResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // Calculate amount raised from confirmed investments
-        $amountRaised = 0;
-        $lendersCount = 0;
-
-        try {
-            $confirmedInvestments = $this->investments()
-                ->where('status', InvestmentStatusEnum::CONFIRMED)
-                ->orWhere('status', InvestmentStatusEnum::COMPLETED);
-
-            $amountRaised = (float) $confirmedInvestments->sum('amount');
-            $lendersCount = $confirmedInvestments->distinct('lender_id')->count('lender_id');
-        } catch (\Exception $e) {
-            // If investments relationship fails, default to 0
-        }
+        // Calculate amount raised from paid milestones
+        $amountRaised = (float) $this->milestones()
+            ->where('status', MilestoneStatusEnum::PAID)
+            ->sum('amount');
 
         $loanAmount = (float) ($this->loan_amount ?? 0);
 
@@ -66,7 +56,7 @@ class ProjectResource extends JsonResource
             'documents_count' => $this->whenCounted('documents'),
             'milestones' => ProjectMilestoneResource::collection($this->whenLoaded('milestones')),
             'milestones_count' => $this->whenCounted('milestones'),
-            'lenders_count' => $lendersCount,
+            'lenders_count' => $this->lender_id ? 1 : 0,
             'cover_photo_url' => $this->getCoverPhotoUrl(),
             'photos' => $this->whenLoaded('photos', fn() => $this->photos->map(fn($photo) => [
                 'id' => $photo->id,
