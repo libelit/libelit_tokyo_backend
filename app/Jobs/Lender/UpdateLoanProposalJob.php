@@ -2,9 +2,11 @@
 
 namespace App\Jobs\Lender;
 
+use App\Enums\BlockchainAuditEventTypeEnum;
 use App\Enums\LoanProposalStatusEnum;
 use App\Enums\ProjectStatusEnum;
 use App\Http\Resources\LoanProposalResource;
+use App\Managers\AuditTrailManager;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -93,6 +95,20 @@ class UpdateLoanProposalJob
         });
 
         $loanProposal->load(['project', 'lender']);
+
+        // Record blockchain audit trail for lender signing
+        AuditTrailManager::record(
+            BlockchainAuditEventTypeEnum::CONTRACT_SIGNED_BY_LENDER,
+            $loanProposal
+        );
+
+        // If fully executed, also record that event
+        if ($loanProposal->status === LoanProposalStatusEnum::LOAN_TERM_AGREEMENT_FULLY_EXECUTED) {
+            AuditTrailManager::record(
+                BlockchainAuditEventTypeEnum::LOAN_FULLY_EXECUTED,
+                $loanProposal
+            );
+        }
 
         return response()->json([
             'success' => true,

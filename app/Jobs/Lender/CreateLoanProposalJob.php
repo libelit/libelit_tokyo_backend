@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Lender;
 
+use App\Enums\BlockchainAuditEventTypeEnum;
 use App\Enums\DocumentS3StatusEnum;
 use App\Enums\DocumentTypeEnum;
 use App\Enums\LoanProposalStatusEnum;
@@ -9,6 +10,7 @@ use App\Enums\ProjectStatusEnum;
 use App\Enums\VerificationStatusEnum;
 use App\Http\Resources\LoanProposalResource;
 use App\Jobs\Documents\UploadDocumentToS3Job;
+use App\Managers\AuditTrailManager;
 use App\Models\Project;
 use App\Models\User;
 use Exception;
@@ -112,6 +114,12 @@ class CreateLoanProposalJob
             });
 
             $loanProposal->load(['project', 'lender', 'documents']);
+
+            // Record blockchain audit trail
+            AuditTrailManager::record(
+                BlockchainAuditEventTypeEnum::LOAN_PROPOSAL_SUBMITTED,
+                $loanProposal
+            );
 
             return response()->json([
                 'success' => true,

@@ -2,9 +2,11 @@
 
 namespace App\Jobs\Lender;
 
+use App\Enums\BlockchainAuditEventTypeEnum;
 use App\Enums\LoanProposalStatusEnum;
 use App\Enums\MilestoneStatusEnum;
 use App\Http\Resources\ProjectMilestoneResource;
+use App\Managers\AuditTrailManager;
 use App\Models\Project;
 use App\Models\User;
 use Exception;
@@ -81,6 +83,13 @@ class RejectMilestoneJob
             $milestone->refresh();
             $milestone->load('proofs');
             $milestone->loadCount('proofs');
+
+            // Record blockchain audit trail for milestone rejection
+            AuditTrailManager::record(
+                BlockchainAuditEventTypeEnum::MILESTONE_REJECTED,
+                $milestone,
+                ['rejection_reason' => $this->rejectionReason]
+            );
 
             return response()->json([
                 'success' => true,
