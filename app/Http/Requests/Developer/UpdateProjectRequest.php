@@ -32,6 +32,8 @@ class UpdateProjectRequest extends FormRequest
             'min_investment' => ['sometimes', 'numeric', 'min:100'],
             'construction_start_date' => ['nullable', 'date'],
             'construction_end_date' => ['nullable', 'date', 'after_or_equal:construction_start_date'],
+            'vr_tour_link' => ['sometimes', 'nullable', 'url', 'max:2048'],
+            'live_camera_link' => ['sometimes', 'nullable', 'url', 'max:2048'],
         ];
     }
 }

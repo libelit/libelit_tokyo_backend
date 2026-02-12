@@ -40,6 +40,8 @@ class Project extends Model
         'funded_at',
         'construction_start_date',
         'construction_end_date',
+        'vr_tour_link',
+        'live_camera_link',
     ];
 
     protected $casts = [

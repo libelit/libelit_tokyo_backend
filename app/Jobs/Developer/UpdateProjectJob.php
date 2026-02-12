@@ -35,11 +35,11 @@ class UpdateProjectJob
                 ], 404);
             }
 
-            // Only allow editing draft or rejected projects
-            if (!in_array($project->status, [ProjectStatusEnum::DRAFT, ProjectStatusEnum::REJECTED])) {
+            // Only allow editing draft, submitted, or rejected projects
+            if (!in_array($project->status, [ProjectStatusEnum::DRAFT, ProjectStatusEnum::SUBMITTED, ProjectStatusEnum::REJECTED])) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Only draft or rejected projects can be edited.',
+                    'message' => 'Only draft, submitted, or rejected projects can be edited.',
                 ], 403);
             }
 

@@ -37,6 +37,8 @@ class StoreProjectRequest extends FormRequest
             'currency' => ['required', 'string', 'max:100'],
             'construction_start_date' => ['nullable', 'date'],
             'construction_end_date' => ['nullable', 'date', 'after_or_equal:construction_start_date'],
+            'vr_tour_link' => ['nullable', 'url', 'max:2048'],
+            'live_camera_link' => ['nullable', 'url', 'max:2048'],
         ];
     }
 

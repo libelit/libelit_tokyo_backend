@@ -99,6 +99,18 @@ class ProjectForm
                             ->required(),
                     ]),
 
+                Section::make('Links')
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('vr_tour_link')
+                            ->label('VR Tour Link')
+                            ->maxLength(2048),
+                        TextInput::make('live_camera_link')
+                            ->label('Live Camera Link')
+                            ->maxLength(2048),
+                    ])
+                    ->collapsible(),
+
                 Section::make('Approval Information')
                     ->columns(2)
                     ->schema([

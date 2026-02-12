@@ -48,6 +48,8 @@ class ProjectResource extends JsonResource
             'funded_at' => $this->funded_at,
             'construction_start_date' => $this->construction_start_date,
             'construction_end_date' => $this->construction_end_date,
+            'vr_tour_link' => $this->vr_tour_link,
+            'live_camera_link' => $this->live_camera_link,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'developer' => new DeveloperProfileResource($this->whenLoaded('developer')),
