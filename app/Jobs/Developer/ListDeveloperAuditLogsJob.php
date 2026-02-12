@@ -3,7 +3,6 @@
 namespace App\Jobs\Developer;
 
 use App\Models\BlockchainAuditLog;
-use App\Models\DeveloperProfile;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -24,18 +23,9 @@ class ListDeveloperAuditLogsJob
     public function handle(): JsonResponse
     {
         try {
-            $profile = $this->user->developerProfile()->first();
-
-            if (!$profile) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Developer profile not found.',
-                ], 404);
-            }
-
             $result = BlockchainAuditLog::query()
-                ->where('auditable_id', $profile->id)
-                ->where('auditable_type', (new DeveloperProfile)->getMorphClass())
+                ->where('user_id', $this->user->id)
+                ->orderBy('created_at', 'desc')
                 ->paginate($this->perPage);
 
             return response()->json([
