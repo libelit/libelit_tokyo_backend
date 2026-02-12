@@ -45,7 +45,7 @@ class StoreLoanProposalRequest extends FormRequest
             'max_ltv_accepted' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'bid_expiry_date' => ['required', 'date', 'after:today'],
             'additional_conditions' => ['nullable', 'string', 'max:5000'],
-            'loan_term_agreement' => ['required', 'file', 'mimes:pdf', 'max:10240'], // 10MB max
+            'loan_term_agreement' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:10240'], // 10MB max
         ];
     }
 
@@ -69,7 +69,7 @@ class StoreLoanProposalRequest extends FormRequest
             'bid_expiry_date.after' => 'Bid expiry date must be in the future.',
             'loan_term_agreement.required' => 'Loan term agreement document is required.',
             'loan_term_agreement.file' => 'Loan term agreement must be a file.',
-            'loan_term_agreement.mimes' => 'Loan term agreement must be a PDF file.',
+            'loan_term_agreement.mimes' => 'Loan term agreement must be a PDF or image file (JPG, JPEG, PNG).',
             'loan_term_agreement.max' => 'Loan term agreement must not exceed 10MB.',
         ];
     }

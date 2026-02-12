@@ -19,7 +19,12 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://libelit.up.railway.app', 'https://libelit-tokyo.on-forge.com'],
+    'allowed_origins' => [
+        'https://libelit.up.railway.app',
+        'https://libelit-tokyo.on-forge.com',
+        'http://localhost:3000',
+        'http://localhost:3001',
+    ],
 
     'allowed_origins_patterns' => [],
 
