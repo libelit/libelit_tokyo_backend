@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\WalletController;
+use App\Http\Controllers\Api\Developer\DeveloperAuditLogController;
 use App\Http\Controllers\Api\Developer\DeveloperProfileController;
 use App\Http\Controllers\Api\Developer\DeveloperKybController;
 use App\Http\Controllers\Api\Developer\DeveloperLoanProposalController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Api\Developer\DeveloperProjectController;
 use App\Http\Controllers\Api\Developer\ProjectDocumentController;
 use App\Http\Controllers\Api\Developer\ProjectMilestoneController;
 use App\Http\Controllers\Api\Developer\ProjectPhotoController;
+use App\Http\Controllers\Api\Lender\LenderAuditLogController;
 use App\Http\Controllers\Api\Lender\LenderKybController;
 use App\Http\Controllers\Api\Lender\LenderLoanProposalController;
 use App\Http\Controllers\Api\Lender\LenderMilestoneController;
@@ -81,6 +83,9 @@ Route::middleware(['api'])
                 Route::get('projects/{projectId}/loan-proposals', [DeveloperLoanProposalController::class, 'index']);
                 Route::get('loan-proposals/{id}', [DeveloperLoanProposalController::class, 'show']);
                 Route::patch('loan-proposals/{id}', [DeveloperLoanProposalController::class, 'update']);
+
+                // Audit Logs
+                Route::get('audit-logs', [DeveloperAuditLogController::class, 'index']);
             });
 
             // Lender Routes
@@ -112,6 +117,9 @@ Route::middleware(['api'])
                 Route::post('projects/{projectId}/milestones/{milestoneId}/approve', [LenderMilestoneController::class, 'approve']);
                 Route::post('projects/{projectId}/milestones/{milestoneId}/reject', [LenderMilestoneController::class, 'reject']);
                 Route::post('projects/{projectId}/milestones/{milestoneId}/payment-proof', [LenderMilestoneController::class, 'uploadPaymentProof']);
+
+                // Audit Logs
+                Route::get('audit-logs', [LenderAuditLogController::class, 'index']);
             });
         });
 });
