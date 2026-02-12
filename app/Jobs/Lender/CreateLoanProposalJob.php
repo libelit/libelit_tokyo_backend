@@ -44,8 +44,8 @@ class CreateLoanProposalJob
                 ], 404);
             }
 
-            // Check if project is in submitted state
-            if ($project->status !== ProjectStatusEnum::SUBMITTED) {
+            // Check if project is in LISTED state
+            if ($project->status !== ProjectStatusEnum::LISTED) {
                 return response()->json([
                     'success' => false,
                     'message' => 'This project is not accepting loan proposals.',
